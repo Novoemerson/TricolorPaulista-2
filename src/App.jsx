@@ -1,6 +1,8 @@
 import React from "react";
 import "./App.css"; // O CSS principal
-import logo from "./assets/spfc/logo.png";
+const logoUrl = "https://upload.wikimedia.org/wikipedia/commons/2/2e/S%C3%A3o_Paulo_FC_crest.svg";
+// ...
+<img src={logoUrl} alt="SPFC" className="tp-logo" />
 
 function App() {
   return (
