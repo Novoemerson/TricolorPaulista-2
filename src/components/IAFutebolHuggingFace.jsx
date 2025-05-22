@@ -12,7 +12,8 @@ function IAFutebolHuggingFace() {
     const response = await fetch("https://api-inference.huggingface.co/models/bigscience/bloomz-560m", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": "Bearer Merson"
       },
       body: JSON.stringify({inputs: prompt})
     });
