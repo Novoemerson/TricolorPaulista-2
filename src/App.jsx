@@ -12,7 +12,7 @@ const jogador2 = "https://s.glbimg.com/es/sde/f/2023/01/11/2f634d15f6f34c7b9983e
 
 // Função para chamar HuggingFace API
 async function pedirIA(prompt) {
-  const response = await fetch("https://api-inference.huggingface.co/models/gpt2", {
+  const response = await fetch("https://api-inference.huggingface.co/models/openai-community/gpt2", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -59,10 +59,10 @@ function useIAFeed(prompt, intervalo_ms = 180000) {
 
 function App() {
   // Prompts para cada seção
-  const promptNoticias = "Escreva um resumo de 3 notícias recentes sobre o futebol do São Paulo FC, formato: 1. Título e resumo curto. 2. Título e resumo curto. 3. Título e resumo curto.";
-  const promptDestaques = "Liste 3 destaques do dia sobre o São Paulo FC, cada um com título, categoria e breve explicação.";
-  const promptJogos = "Quais são os próximos 2 jogos do São Paulo FC? Escreva a data, adversário, local e horário para cada um.";
-  const promptElenco = "Destaque 2 jogadores do São Paulo FC hoje, escreva nome, posição e uma curiosidade sobre cada um.";
+  const promptNoticias = "Escreva um resumo de 3 notícias recentes sobre o futebol do São Paulo FC, formato: 1. Título e resumo curto. 2. Título e resumo curto. 3. Título e resumo curto. Responda em português.";
+  const promptDestaques = "Liste 3 destaques do dia sobre o São Paulo FC, cada um com título, categoria e breve explicação. Responda em português.";
+  const promptJogos = "Quais são os próximos 2 jogos do São Paulo FC? Escreva a data, adversário, local e horário para cada um. Responda em português.";
+  const promptElenco = "Destaque 2 jogadores do São Paulo FC hoje, escreva nome, posição e uma curiosidade sobre cada um. Responda em português.";
 
   // Alimentação automática via IA
   const noticiasIA = useIAFeed(promptNoticias);
