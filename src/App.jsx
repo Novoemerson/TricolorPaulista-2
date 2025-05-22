@@ -1,14 +1,14 @@
 import React from "react";
-import IAFutebol from "./components/IAFutebol";
+import IAFutebolHuggingFace from "./components/IAFutebolHuggingFace";
 
+function App() {
   return (
     <div>
       <h1>Tricolor Paulista</h1>
-      {/* ...restante do seu site... */}
-      <IAFutebol />
+      <IAFutebolHuggingFace />
     </div>
   );
-};
+}
 
 // Imagens confiáveis
 const logoSPFC = "https://upload.wikimedia.org/wikipedia/commons/2/2e/S%C3%A3o_Paulo_FC_crest.svg";
