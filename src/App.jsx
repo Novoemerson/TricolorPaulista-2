@@ -16,11 +16,21 @@ async function pedirIA(prompt) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer SEU_TOKEN_AQUI"
+      "Authorization": "Bearer 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"
     },
     body: JSON.stringify({inputs: prompt})
   });
   const dataRaw = await response.text();
+  try {
+    const data = JSON.parse(dataRaw);
+    if (data.error) {
+      return "Erro da IA: " + data.error;
+    }
+    return data[0]?.generated_text || "Não foi possível gerar conteúdo.";
+  } catch (e) {
+    return "Erro ao obter informação da IA: " + dataRaw;
+  }
+}
   try {
     const data = JSON.parse(dataRaw);
     if (data.error) {
