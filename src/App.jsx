@@ -1,15 +1,15 @@
 import React from "react";
 import "./App.css";
 
-// Imagens (use outras URLs se quiser)
+// Imagens confiáveis
 const logoSPFC = "https://upload.wikimedia.org/wikipedia/commons/2/2e/S%C3%A3o_Paulo_FC_crest.svg";
 const palmeiras = "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg";
 const santos = "https://upload.wikimedia.org/wikipedia/commons/3/35/Santos_logo.svg";
-const jogador1 = "https://i.imgur.com/BDQvYd2.jpg";
-const jogador2 = "https://i.imgur.com/B9YmVXo.jpg";
-const noticia1 = "https://i.imgur.com/4YQbAqV.jpg";
-const noticia2 = "https://i.imgur.com/7XcKQ5H.jpg";
-const noticia3 = "https://i.imgur.com/5y4XUya.jpg";
+const jogador1 = "https://s.glbimg.com/es/sde/f/2019/05/21/8e3e0c7bfaeb4b2b8a44b6f2d8e815b6_Luciano_SPFC.png";
+const jogador2 = "https://s.glbimg.com/es/sde/f/2023/01/11/2f634d15f6f34c7b9983e1c4a1b62aee_Rafael_Goleiro.png";
+const noticia1 = "https://upload.wikimedia.org/wikipedia/commons/a/a2/Est%C3%A1dio_do_Morumbi_-_panor%C3%A2mica_2014.jpg";
+const noticia2 = "https://upload.wikimedia.org/wikipedia/commons/8/88/Torcida_Sao_Paulo_FC_Morumbi_2015.jpg";
+const noticia3 = "https://upload.wikimedia.org/wikipedia/commons/4/44/S%C3%A3o_Paulo_FC_jogo_2018.jpg";
 
 // DESTAQUES
 const destaques = [
