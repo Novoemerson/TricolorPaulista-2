@@ -1,14 +1,4 @@
-import React from "react";
-import IAFutebolHuggingFace from "./components/IAFutebolHuggingFace";
-
-function App() {
-  return (
-    <div>
-      <h1>Tricolor Paulista</h1>
-      <IAFutebolHuggingFace />
-    </div>
-  );
-}
+import React, { useEffect, useState } from "react";
 
 // Imagens confiáveis
 const logoSPFC = "https://upload.wikimedia.org/wikipedia/commons/2/2e/S%C3%A3o_Paulo_FC_crest.svg";
@@ -20,68 +10,59 @@ const noticia3 = "https://upload.wikimedia.org/wikipedia/commons/4/44/S%C3%A3o_P
 const jogador1 = "https://s.glbimg.com/es/sde/f/2019/05/21/8e3e0c7bfaeb4b2b8a44b6f2d8e815b6_Luciano_SPFC.png";
 const jogador2 = "https://s.glbimg.com/es/sde/f/2023/01/11/2f634d15f6f34c7b9983e1c4a1b62aee_Rafael_Goleiro.png";
 
-// DESTAQUES
-const destaques = [
-  {
-    id: 1,
-    visitas: "4,2 mil",
-    comentarios: 49,
-    categoria: "Relacionados",
-    titulo: "São Paulo divulga lista de relacionados com três ausências e uma novidade contra o Palmeiras",
-    imagem: noticia1,
-    url: "#",
-    compartilhamentos: 7,
-    likes: 55,
-    dislikes: 7,
-  },
-  {
-    id: 2,
-    visitas: "1,1 mil",
-    comentarios: 12,
-    categoria: "De fora",
-    titulo: "Volante vira desfalque do São Paulo para clássico do Brasileirão; veja detalhes",
-    imagem: noticia2,
-    url: "#",
-    compartilhamentos: 2,
-    likes: 16,
-    dislikes: 4,
-  },
-  {
-    id: 3,
-    visitas: "690",
-    comentarios: 9,
-    categoria: "Decisão!",
-    titulo: "São Paulo finaliza preparação para encarar o Palmeiras; veja provável escalação",
-    imagem: noticia3,
-    url: "#",
-    compartilhamentos: 0,
-    likes: 5,
-    dislikes: 2,
-  },
-];
+// Função para chamar HuggingFace API
+async function pedirIA(prompt) {
+  const response = await fetch("https://api-inference.huggingface.co/models/bigscience/bloomz-560m", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer Merson"
+    },
+    body: JSON.stringify({inputs: prompt})
+  });
+  const data = await response.json();
+  // bloomz retorna um array de objetos
+  return data[0]?.generated_text || "Não foi possível gerar conteúdo.";
+}
 
-function DestaqueCard({destaque}) {
-  return (
-    <article className="destaque-card">
-      <figure className="destaque-img">
-        <a href={destaque.url}><img src={destaque.imagem} alt={destaque.titulo} /></a>
-      </figure>
-      <div className="destaque-meta">
-        <span className="destaque-visitas">{destaque.visitas} visitas</span>
-        <span className="destaque-comentarios">{destaque.comentarios} comentários</span>
-      </div>
-      <div className="destaque-categoria">{destaque.categoria}</div>
-      <h2 className="destaque-titulo"><a href={destaque.url}>{destaque.titulo}</a></h2>
-      <div className="destaque-interacoes">
-        <span className="destaque-comp"><b>Compartilhar:</b> {destaque.compartilhamentos}</span>
-        <span className="destaque-like">👍 {destaque.likes}</span>
-        <span className="destaque-dislike">👎 {destaque.dislikes}</span>
-      </div>
-    </article>
-  );
+// Hook customizado para atualizar textos via IA a cada X milissegundos
+function useIAFeed(prompt, intervalo_ms = 180000) {
+  const [texto, setTexto] = useState("Carregando...");
+  useEffect(() => {
+    let ativo = true;
+    async function atualizar() {
+      setTexto("Carregando...");
+      try {
+        const textoIA = await pedirIA(prompt);
+        if (ativo) setTexto(textoIA.replace(prompt, "").trim());
+      } catch {
+        if (ativo) setTexto("Erro ao obter informação da IA.");
+      }
+    }
+    atualizar();
+    const timer = setInterval(atualizar, intervalo_ms);
+    return () => {
+      ativo = false;
+      clearInterval(timer);
+    };
+    // eslint-disable-next-line
+  }, [prompt, intervalo_ms]);
+  return texto;
 }
 
 function App() {
+  // Prompts para cada seção
+  const promptNoticias = "Escreva um resumo de 3 notícias recentes sobre o futebol do São Paulo FC, formato: 1. Título e resumo curto. 2. Título e resumo curto. 3. Título e resumo curto.";
+  const promptDestaques = "Liste 3 destaques do dia sobre o São Paulo FC, cada um com título, categoria e breve explicação.";
+  const promptJogos = "Quais são os próximos 2 jogos do São Paulo FC? Escreva a data, adversário, local e horário para cada um.";
+  const promptElenco = "Destaque 2 jogadores do São Paulo FC hoje, escreva nome, posição e uma curiosidade sobre cada um.";
+
+  // Alimentação automática via IA
+  const noticiasIA = useIAFeed(promptNoticias);
+  const destaquesIA = useIAFeed(promptDestaques);
+  const jogosIA = useIAFeed(promptJogos);
+  const elencoIA = useIAFeed(promptElenco);
+
   return (
     <div className="site-bg">
       {/* Header */}
@@ -112,34 +93,33 @@ function App() {
           <div className="noticias-bloco">
             <h2>Últimas Notícias</h2>
             <div className="news-list">
-              <div className="news-card">
-                <img src={noticia1} alt="Notícia" />
-                <div>
-                  <div className="news-title">São Paulo vence clássico no Morumbi</div>
-                  <div className="news-meta">21/05/2025 • Por Redação</div>
+              {noticiasIA.split(/\d+\.\s/).filter(Boolean).map((noti, idx) => (
+                <div className="news-card" key={idx}>
+                  <img src={[noticia1, noticia2, noticia3][idx % 3]} alt="Notícia" />
+                  <div>
+                    <div className="news-title">{noti.split(":")[0]}</div>
+                    <div className="news-meta">{noti.split(":").slice(1).join(":")}</div>
+                  </div>
                 </div>
-              </div>
-              <div className="news-card">
-                <img src={noticia2} alt="Notícia" />
-                <div>
-                  <div className="news-title">Novo uniforme tricolor é lançado</div>
-                  <div className="news-meta">20/05/2025 • Por Redação</div>
-                </div>
-              </div>
-              <div className="news-card">
-                <img src={noticia3} alt="Notícia" />
-                <div>
-                  <div className="news-title">SPFC divulga agenda de treinos da semana</div>
-                  <div className="news-meta">19/05/2025 • Por Redação</div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
           <h2 className="destaques-title">Destaques</h2>
           <div className="destaques-mosaico">
-            {destaques.map((d) => (
-              <DestaqueCard destaque={d} key={d.id} />
+            {destaquesIA.split(/\d+\.\s/).filter(Boolean).map((desc, idx) => (
+              <article className="destaque-card" key={idx}>
+                <figure className="destaque-img">
+                  <img src={[noticia1, noticia2, noticia3][idx % 3]} alt="Destaque" />
+                </figure>
+                <div className="destaque-meta">
+                  <span className="destaque-categoria">{desc.split(":")[0]}</span>
+                </div>
+                <h2 className="destaque-titulo">{desc.split(":")[1] || desc}</h2>
+                <div className="destaque-interacoes">
+                  <span className="destaque-comp">IA Atualizado</span>
+                </div>
+              </article>
             ))}
           </div>
         </section>
@@ -149,42 +129,27 @@ function App() {
           <div className="card">
             <h2>Próximos Jogos</h2>
             <div className="match-list">
-              <div className="match-item">
-                <img src={logoSPFC} alt="SPFC" className="escudo" />
-                <span className="vs">vs</span>
-                <img src={palmeiras} alt="Palmeiras" className="escudo" />
-                <div className="match-details">
-                  <strong>25/05/2025</strong>
-                  <span>Morumbi - 16h</span>
+              {jogosIA.split(/\d+\.\s/).filter(Boolean).map((jogo, idx) => (
+                <div className="match-item" key={idx}>
+                  <img src={logoSPFC} alt="SPFC" className="escudo" />
+                  <span className="vs">vs</span>
+                  <img src={idx === 0 ? palmeiras : santos} alt={idx === 0 ? "Palmeiras" : "Santos"} className="escudo" />
+                  <div className="match-details">{jogo}</div>
                 </div>
-              </div>
-              <div className="match-item">
-                <img src={logoSPFC} alt="SPFC" className="escudo" />
-                <span className="vs">vs</span>
-                <img src={santos} alt="Santos" className="escudo" />
-                <div className="match-details">
-                  <strong>01/06/2025</strong>
-                  <span>Morumbi - 18h</span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           <div className="card">
             <h2>Elenco em Destaque</h2>
-            <div className="player-card">
-              <img src={jogador1} alt="Luciano" className="player-thumb" />
-              <div>
-                <div className="player-nome">Luciano</div>
-                <div className="player-pos">Atacante</div>
+            {elencoIA.split(/\d+\.\s/).filter(Boolean).map((jog, idx) => (
+              <div className="player-card" key={idx}>
+                <img src={[jogador1, jogador2][idx % 2]} alt="Jogador" className="player-thumb" />
+                <div>
+                  <div className="player-nome">{jog.split(":")[0]}</div>
+                  <div className="player-pos">{jog.split(":").slice(1).join(":")}</div>
+                </div>
               </div>
-            </div>
-            <div className="player-card">
-              <img src={jogador2} alt="Rafael" className="player-thumb" />
-              <div>
-                <div className="player-nome">Rafael</div>
-                <div className="player-pos">Goleiro</div>
-              </div>
-            </div>
+            ))}
           </div>
         </aside>
       </main>
