@@ -9,8 +9,7 @@ function App() {
       <IAFutebol />
     </div>
   );
-}
-export default App;
+};
 
 // Imagens confiáveis
 const logoSPFC = "https://upload.wikimedia.org/wikipedia/commons/2/2e/S%C3%A3o_Paulo_FC_crest.svg";
