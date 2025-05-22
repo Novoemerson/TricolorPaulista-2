@@ -16,12 +16,14 @@ async function pedirIA(prompt) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer Merson"
+      "Authorization": "Bearer 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"
     },
     body: JSON.stringify({inputs: prompt})
   });
   const data = await response.json();
-  // bloomz retorna um array de objetos
+  if (data.error) {
+    return "Erro da IA: " + data.error;
+  }
   return data[0]?.generated_text || "Não foi possível gerar conteúdo.";
 }
 
@@ -35,8 +37,8 @@ function useIAFeed(prompt, intervalo_ms = 180000) {
       try {
         const textoIA = await pedirIA(prompt);
         if (ativo) setTexto(textoIA.replace(prompt, "").trim());
-      } catch {
-        if (ativo) setTexto("Erro ao obter informação da IA.");
+      } catch (e) {
+        if (ativo) setTexto("Erro ao obter informação da IA: " + e.message);
       }
     }
     atualizar();
