@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-// Imagens online (escudos e fotos)
+// Imagens (use outras URLs se quiser)
 const logoSPFC = "https://upload.wikimedia.org/wikipedia/commons/2/2e/S%C3%A3o_Paulo_FC_crest.svg";
 const palmeiras = "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg";
 const santos = "https://upload.wikimedia.org/wikipedia/commons/3/35/Santos_logo.svg";
@@ -11,7 +11,7 @@ const noticia1 = "https://i.imgur.com/4YQbAqV.jpg";
 const noticia2 = "https://i.imgur.com/7XcKQ5H.jpg";
 const noticia3 = "https://i.imgur.com/5y4XUya.jpg";
 
-// Noticias em destaque estilo meutimao
+// DESTAQUES
 const destaques = [
   {
     id: 1,
@@ -54,36 +54,19 @@ const destaques = [
 function DestaqueCard({destaque}) {
   return (
     <article className="destaque-card">
-      <div className="destaque-header">
-        <p className="destaque-num">
-          <span className="visitas">{destaque.visitas}</span>
-          <span className="comentarios">{destaque.comentarios}</span>
-        </p>
-        <h4>
-          <a href={destaque.url}>{destaque.categoria}</a>
-        </h4>
-      </div>
       <figure className="destaque-img">
         <a href={destaque.url}><img src={destaque.imagem} alt={destaque.titulo} /></a>
       </figure>
-      <div className="destaque-chamada">
-        <h2><a href={destaque.url}>{destaque.titulo}</a></h2>
+      <div className="destaque-meta">
+        <span className="destaque-visitas">{destaque.visitas} visitas</span>
+        <span className="destaque-comentarios">{destaque.comentarios} comentários</span>
       </div>
+      <div className="destaque-categoria">{destaque.categoria}</div>
+      <h2 className="destaque-titulo"><a href={destaque.url}>{destaque.titulo}</a></h2>
       <div className="destaque-interacoes">
-        <a href="#" className="compartilhamentos">
-          <em>compartilhamentos</em>
-          <span>{destaque.compartilhamentos}</span>
-        </a>
-        <div className="likes">
-          <a href="#" className="like">
-            <em>gostei</em>
-            <span>{destaque.likes}</span>
-          </a>
-          <a href="#" className="dislike">
-            <em>não gostei</em>
-            <span>{destaque.dislikes}</span>
-          </a>
-        </div>
+        <span className="destaque-comp"><b>Compartilhar:</b> {destaque.compartilhamentos}</span>
+        <span className="destaque-like">👍 {destaque.likes}</span>
+        <span className="destaque-dislike">👎 {destaque.dislikes}</span>
       </div>
     </article>
   );
@@ -91,15 +74,13 @@ function DestaqueCard({destaque}) {
 
 function App() {
   return (
-    <div className="tp-bg">
+    <div className="site-bg">
       {/* Header */}
-      <header className="tp-header">
-        <div className="tp-header-container">
-          <div className="tp-logo-area">
-            <img src={logoSPFC} alt="SPFC" className="tp-logo" />
-            <span className="tp-site-title">Tricolor Paulista</span>
-          </div>
-          <nav className="tp-main-menu">
+      <header className="site-header">
+        <div className="site-header-area">
+          <img src={logoSPFC} alt="SPFC" className="site-logo" />
+          <span className="site-title">Tricolor Paulista</span>
+          <nav className="site-menu">
             <a href="#">Início</a>
             <a href="#">Notícias</a>
             <a href="#">Jogos</a>
@@ -111,84 +92,88 @@ function App() {
         </div>
       </header>
 
-      {/* Main grid */}
-      <main className="tp-main-container">
-        {/* Coluna esquerda (notícias/destaques) */}
-        <section className="tp-main-content">
-          <div className="tp-banner">
+      {/* Main Layout */}
+      <main className="site-main">
+        {/* COLUNA PRINCIPAL */}
+        <section className="main-content">
+          <div className="portal-banner">
             O maior portal do São Paulo FC na web!
           </div>
-          <h2 className="tp-section-title">Últimas Notícias</h2>
-          <div className="tp-news-group">
-            <div className="tp-news-card">
-              <img src={noticia1} alt="Notícia" className="tp-news-thumb" />
-              <div>
-                <div className="tp-news-titulo">São Paulo vence clássico no Morumbi</div>
-                <div className="tp-news-meta">21/05/2025 • Por Redação</div>
+
+          <div className="noticias-bloco">
+            <h2>Últimas Notícias</h2>
+            <div className="news-list">
+              <div className="news-card">
+                <img src={noticia1} alt="Notícia" />
+                <div>
+                  <div className="news-title">São Paulo vence clássico no Morumbi</div>
+                  <div className="news-meta">21/05/2025 • Por Redação</div>
+                </div>
               </div>
-            </div>
-            <div className="tp-news-card">
-              <img src={noticia2} alt="Notícia" className="tp-news-thumb" />
-              <div>
-                <div className="tp-news-titulo">Novo uniforme tricolor é lançado</div>
-                <div className="tp-news-meta">20/05/2025 • Por Redação</div>
+              <div className="news-card">
+                <img src={noticia2} alt="Notícia" />
+                <div>
+                  <div className="news-title">Novo uniforme tricolor é lançado</div>
+                  <div className="news-meta">20/05/2025 • Por Redação</div>
+                </div>
               </div>
-            </div>
-            <div className="tp-news-card">
-              <img src={noticia3} alt="Notícia" className="tp-news-thumb" />
-              <div>
-                <div className="tp-news-titulo">SPFC divulga agenda de treinos da semana</div>
-                <div className="tp-news-meta">19/05/2025 • Por Redação</div>
+              <div className="news-card">
+                <img src={noticia3} alt="Notícia" />
+                <div>
+                  <div className="news-title">SPFC divulga agenda de treinos da semana</div>
+                  <div className="news-meta">19/05/2025 • Por Redação</div>
+                </div>
               </div>
             </div>
           </div>
-          <h2 className="tp-section-title">Destaques</h2>
-          <div className="tp-destaques-mosaico">
-            {destaques.map((d, idx) => (
+
+          <h2 className="destaques-title">Destaques</h2>
+          <div className="destaques-mosaico">
+            {destaques.map((d) => (
               <DestaqueCard destaque={d} key={d.id} />
             ))}
           </div>
         </section>
 
-        {/* Sidebar */}
-        <aside className="tp-sidebar">
-          <div className="tp-card tp-card-next-match">
+        {/* SIDEBAR */}
+        <aside className="sidebar">
+          <div className="card">
             <h2>Próximos Jogos</h2>
-            <div className="tp-next-match">
-              <div className="tp-next-match-item">
-                <img src={logoSPFC} alt="SPFC" className="tp-escudo" />
-                <span className="tp-vs">vs</span>
-                <img src={palmeiras} alt="Palmeiras" className="tp-escudo" />
-                <div className="tp-next-details">
+            <div className="match-list">
+              <div className="match-item">
+                <img src={logoSPFC} alt="SPFC" className="escudo" />
+                <span className="vs">vs</span>
+                <img src={palmeiras} alt="Palmeiras" className="escudo" />
+                <div className="match-details">
                   <strong>25/05/2025</strong>
                   <span>Morumbi - 16h</span>
                 </div>
               </div>
-              <div className="tp-next-match-item">
-                <img src={logoSPFC} alt="SPFC" className="tp-escudo" />
-                <span className="tp-vs">vs</span>
-                <img src={santos} alt="Santos" className="tp-escudo" />
-                <div className="tp-next-details">
+              <div className="match-item">
+                <img src={logoSPFC} alt="SPFC" className="escudo" />
+                <span className="vs">vs</span>
+                <img src={santos} alt="Santos" className="escudo" />
+                <div className="match-details">
                   <strong>01/06/2025</strong>
                   <span>Morumbi - 18h</span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="tp-card">
+          <div className="card">
             <h2>Elenco em Destaque</h2>
-            <div className="tp-player-card">
-              <img src={jogador1} alt="Luciano" className="tp-player-thumb" />
+            <div className="player-card">
+              <img src={jogador1} alt="Luciano" className="player-thumb" />
               <div>
-                <div className="tp-player-nome">Luciano</div>
-                <div className="tp-player-pos">Atacante</div>
+                <div className="player-nome">Luciano</div>
+                <div className="player-pos">Atacante</div>
               </div>
             </div>
-            <div className="tp-player-card">
-              <img src={jogador2} alt="Rafael" className="tp-player-thumb" />
+            <div className="player-card">
+              <img src={jogador2} alt="Rafael" className="player-thumb" />
               <div>
-                <div className="tp-player-nome">Rafael</div>
-                <div className="tp-player-pos">Goleiro</div>
+                <div className="player-nome">Rafael</div>
+                <div className="player-pos">Goleiro</div>
               </div>
             </div>
           </div>
@@ -196,8 +181,8 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="tp-footer">
-        <img src={logoSPFC} alt="Escudo SPFC" className="tp-logo-footer" />
+      <footer className="site-footer">
+        <img src={logoSPFC} alt="Escudo SPFC" className="footer-logo" />
         Tricolor Paulista © 2025 — Não oficial, dedicado à torcida do São Paulo FC.
         <br />
         <span style={{ color: "#da291c" }}>#VamosSãoPaulo</span>
