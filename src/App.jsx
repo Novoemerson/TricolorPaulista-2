@@ -12,7 +12,7 @@ const jogador2 = "https://s.glbimg.com/es/sde/f/2023/01/11/2f634d15f6f34c7b9983e
 
 // Função para chamar HuggingFace API
 async function pedirIA(prompt) {
-  const response = await fetch("https://api-inference.huggingface.co/models/bigscience/bloomz-560m", {
+  const response = await fetch("https://api-inference.huggingface.co/models/gpt2", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -20,11 +20,16 @@ async function pedirIA(prompt) {
     },
     body: JSON.stringify({inputs: prompt})
   });
-  const data = await response.json();
-  if (data.error) {
-    return "Erro da IA: " + data.error;
+  const dataRaw = await response.text();
+  try {
+    const data = JSON.parse(dataRaw);
+    if (data.error) {
+      return "Erro da IA: " + data.error;
+    }
+    return data[0]?.generated_text || "Não foi possível gerar conteúdo.";
+  } catch (e) {
+    return "Erro ao obter informação da IA: " + dataRaw;
   }
-  return data[0]?.generated_text || "Não foi possível gerar conteúdo.";
 }
 
 // Hook customizado para atualizar textos via IA a cada X milissegundos
