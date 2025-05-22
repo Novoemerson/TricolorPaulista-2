@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
 
+// URLs de imagens diretas da internet
+const logoSPFC = "https://upload.wikimedia.org/wikipedia/commons/2/2d/S%C3%A3o_Paulo_FC_crest.svg";
+const palmeiras = "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg";
+const santos = "https://upload.wikimedia.org/wikipedia/commons/3/35/Santos_logo.svg";
+const noticia1 = "https://upload.wikimedia.org/wikipedia/commons/2/2d/S%C3%A3o_Paulo_FC_crest.svg";
+const noticia2 = "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg";
+const noticia3 = "https://upload.wikimedia.org/wikipedia/commons/3/35/Santos_logo.svg";
+const jogador1 = "https://randomuser.me/api/portraits/men/32.jpg";
+const jogador2 = "https://randomuser.me/api/portraits/men/65.jpg";
+
 // Função para chamar HuggingFace API
 async function pedirIA(prompt) {
   const response = await fetch("https://api-inference.huggingface.co/models/facebook/opt-1.3b", {
