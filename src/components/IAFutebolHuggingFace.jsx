@@ -2,35 +2,31 @@ import React, { useState } from "react";
 
 function IAFutebolHuggingFace() {
   const [resposta, setResposta] = useState("");
-  const [carregando, setCarregando] = useState(false);
 
   async function gerarNoticia() {
-    setCarregando(true);
     setResposta("Gerando notícia...");
     const prompt = "Escreva uma notícia criativa e atual sobre o futebol do São Paulo FC.";
-
-    const response = await fetch("https://api-inference.huggingface.co/models/bigscience/bloomz-560m", {
+    const response = await fetch("https://api-inference.huggingface.co/models/openai-community/gpt2", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer Merson"
+        "Authorization": "Bearer SUA_API_KEY_AQUI"
       },
       body: JSON.stringify({inputs: prompt})
     });
-
-    const data = await response.json();
-    setResposta(data[0]?.generated_text || "Não foi possível gerar notícia.");
-    setCarregando(false);
+    const dataRaw = await response.text();
+    try {
+      const data = JSON.parse(dataRaw);
+      setResposta(data[0]?.generated_text || "Não foi possível gerar notícia.");
+    } catch (e) {
+      setResposta("Erro da IA: " + dataRaw);
+    }
   }
 
   return (
-    <div className="ia-box">
-      <button onClick={gerarNoticia} disabled={carregando}>
-        {carregando ? "Gerando..." : "Gerar notícia de IA"}
-      </button>
-      <div className="ia-resposta" style={{marginTop: "1em", background: "#fafafa", padding: 15, borderRadius: 8}}>
-        {resposta}
-      </div>
+    <div>
+      <button onClick={gerarNoticia}>Gerar notícia de IA</button>
+      <div>{resposta}</div>
     </div>
   );
 }
