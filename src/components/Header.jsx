@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import logo from "../assets/spfc/logo.png";
+import logo from "https://logodetimes.com/wp-content/uploads/sao-paulo.png";
 import "../styles/theme.css";
 
 export default function Header() {
