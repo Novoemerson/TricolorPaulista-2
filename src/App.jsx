@@ -31,14 +31,6 @@ async function pedirIA(prompt) {
     return "Erro ao obter informação da IA: " + dataRaw;
   }
 }
-    if (data.error) {
-      return "Erro da IA: " + data.error;
-    }
-    return data[0]?.generated_text || "Não foi possível gerar conteúdo.";
-  } catch (e) {
-    return "Erro ao obter informação da IA: " + dataRaw;
-  }
-}
 
 // Hook customizado para atualizar textos via IA a cada X milissegundos
 function useIAFeed(prompt, intervalo_ms = 180000) {
@@ -60,7 +52,6 @@ function useIAFeed(prompt, intervalo_ms = 180000) {
       ativo = false;
       clearInterval(timer);
     };
-    // eslint-disable-next-line
   }, [prompt, intervalo_ms]);
   return texto;
 }
