@@ -12,17 +12,25 @@ const jogador2 = "https://s.glbimg.com/es/sde/f/2023/01/11/2f634d15f6f34c7b9983e
 
 // Função para chamar HuggingFace API
 async function pedirIA(prompt) {
-  const response = await fetch("https://api-inference.huggingface.co/models/gpt2", {
+  const response = await fetch("https://api-inference.huggingface.co/models/facebook/opt-1.3b", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer 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"
+      "Authorization": "Bearer SEU_TOKEN_AQUI"
     },
     body: JSON.stringify({inputs: prompt})
   });
   const dataRaw = await response.text();
   try {
     const data = JSON.parse(dataRaw);
+    if (data.error) {
+      return "Erro da IA: " + data.error;
+    }
+    return data[0]?.generated_text || "Não foi possível gerar conteúdo.";
+  } catch (e) {
+    return "Erro ao obter informação da IA: " + dataRaw;
+  }
+}
     if (data.error) {
       return "Erro da IA: " + data.error;
     }
