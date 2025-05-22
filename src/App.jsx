@@ -1,7 +1,6 @@
 import React from "react";
 import IAFutebol from "./components/IAFutebol";
 
-function App() {
   return (
     <div>
       <h1>Tricolor Paulista</h1>
