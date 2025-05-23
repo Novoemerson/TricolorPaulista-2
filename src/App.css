@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Montserrat:wght@700&display=swap');
+
 body {
-  font-family: 'Roboto', Arial, sans-serif;
+  font-family: 'Inter', 'Montserrat', Arial, sans-serif;
   background: #f2f2f2;
   margin: 0;
   padding: 0;
@@ -8,133 +10,250 @@ body {
 .main-container {
   max-width: 1300px;
   margin: 0 auto;
+  background: #fff;
+  box-shadow: 0 0 8px #e0e0e0;
+  padding-bottom: 40px;
 }
 
 .header {
-  background: #b22222;
-  color: #fff;
-  padding: 32px 0 0 0;
-  text-align: center;
+  background: #fff;
+  padding: 0 0 0 0;
 }
 
-.main-news-cover {
-  position: relative;
-  margin: 24px auto 0 auto;
-  width: 95%;
-  max-width: 1000px;
-  border-radius: 24px;
+.cover-highlight, .main-news-cover {
+  display: flex;
+  align-items: flex-end;
+  background: #111 url("https://www.transparenttextures.com/patterns/football-no-lines.png");
+  border-radius: 0 0 18px 18px;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  position: relative;
+  min-height: 390px;
+  margin-bottom: 30px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
 }
-.main-news-image {
+
+.cover-image, .main-news-image {
+  max-width: 56vw;
+  min-width: 360px;
   width: 100%;
-  height: 340px;
+  max-height: 390px;
+  min-height: 270px;
   object-fit: cover;
+  border-radius: 0 0 0 18px;
   display: block;
 }
-.main-news-content {
-  position: absolute;
-  bottom: 32px;
-  left: 32px;
-  background: rgba(0,0,0,0.48);
+
+.cover-info, .main-news-content {
+  padding: 36px 48px 40px 32px;
+  background: linear-gradient(90deg,rgba(0,0,0,0.84) 60%,rgba(0,0,0,0.12));
   color: #fff;
-  padding: 24px;
-  border-radius: 16px;
-  max-width: 75%;
+  min-width: 320px;
+  flex: 1;
+  position: static;
+  border-radius: 0;
+  max-width: unset;
 }
-.news-label {
-  background: #fff;
-  color: #b22222;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 2px 10px;
-  margin-bottom: 8px;
+
+.cover-label, .news-label {
+  color: #fff;
+  background: #dc143c;
+  padding: 4px 18px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 18px;
   display: inline-block;
+}
+
+.cover-title, .main-news-title {
+  font-size: 2.7rem;
+  font-weight: 900;
+  font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+  margin: 12px 0 10px 0;
+  line-height: 1.12;
+}
+
+.cover-subtitle, .main-news-subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #e0e0e0;
+  margin: 0;
 }
 
 .content-layout {
   display: flex;
-  justify-content: space-between;
-  margin: 32px auto;
-  gap: 32px;
-  max-width: 1000px;
+  gap: 36px;
+  margin: 0 28px;
 }
 
-.news-cards-section {
-  flex: 2 1 0;
+.center-content, .news-cards-section {
+  flex: 2.5;
+  min-width: 0;
 }
-.news-cards-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-.news-card {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.10);
-  overflow: hidden;
-  width: 240px;
+
+.big-news-list, .news-cards-list {
   display: flex;
   flex-direction: column;
+  gap: 32px;
+  margin-bottom: 36px;
 }
-.news-card img {
+
+.big-news-card, .news-card {
+  display: flex;
+  background: #f5f5f7;
+  border-radius: 18px;
+  overflow: hidden;
+  min-height: 180px;
+  box-shadow: 0 2px 10px #ececec;
   width: 100%;
-  height: 120px;
+  flex-direction: row;
+}
+
+.big-news-img, .news-card img {
+  width: 260px;
+  min-width: 180px;
+  height: 180px;
   object-fit: cover;
 }
-.news-card-content {
-  padding: 16px;
+
+.big-news-text, .news-card-content {
+  padding: 22px 32px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.news-card-content h4 {
+
+.big-news-title, .news-card-content h4 {
+  font-size: 1.35rem;
+  font-weight: 800;
   margin: 0 0 8px 0;
-  font-size: 1.08rem;
+  font-family: 'Montserrat', Arial, sans-serif;
+  color: #dc143c;
+}
+
+.big-news-subtitle, .news-card-content p {
+  font-size: 1.1rem;
+  color: #444;
+  margin: 0;
 }
 
 .sidebar {
-  flex: 1 1 0;
+  flex: 1.1;
+  min-width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
 }
-.sidebar section {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 9px rgba(0,0,0,0.09);
-  padding: 16px 18px;
+
+.next-matches, .standings, .events, .videos-section, .sidebar section {
+  background: #f5f5fa;
+  border-radius: 18px;
+  padding: 22px 22px 18px 22px;
+  box-shadow: 0 2px 10px #ececec;
 }
-.sidebar h3 {
+
+.next-matches h2, .standings h2, .events h2, .videos-section h2, .sidebar h3 {
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: #dc143c;
   margin-top: 0;
+  margin-bottom: 16px;
+  font-family: 'Montserrat', Arial, sans-serif;
 }
+
 .next-matches ul, .events ul, .forum ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.standings table {
+
+.match-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+  font-size: 1.08rem;
+}
+
+.escudo-time {
+  width: 28px;
+  height: 28px;
+  margin: 0 7px 0 0;
+  object-fit: contain;
+}
+
+.vs {
+  margin: 0 8px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.match-info {
+  margin-left: 11px;
+  font-size: 0.97rem;
+  color: #555;
+}
+
+.standings-table, .standings table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.98rem;
+  margin-top: 9px;
+  font-size: 1.01rem;
+  text-align: left;
 }
-.standings th, .standings td {
-  padding: 4px 6px;
+
+.standings-table th, .standings-table td, .standings th, .standings td {
+  padding: 7px 8px;
+  font-size: 1.01rem;
+  text-align: left;
+}
+
+.standings-table th, .standings th {
+  color: #dc143c;
+  font-weight: 800;
+  border-bottom: 2px solid #dc143c2e;
+  background: none;
+}
+
+.standings-table td, .standings td {
   border-bottom: 1px solid #eee;
+  color: #222;
 }
-.standings th {
-  background: #f7f7f7;
-  color: #b22222;
-}
-.standings tr:last-child td {
+
+.standings tr:last-child td, .standings-table tr:last-child td {
   border-bottom: none;
 }
-.events a {
-  color: #b22222;
-  text-decoration: underline;
-  font-weight: bold;
+
+.escudo-mini {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  vertical-align: middle;
+  object-fit: contain;
 }
-.forum-author {
-  color: #b22222;
-  font-weight: bold;
+
+.events ul, .videos-list {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+}
+
+.events li {
+  margin-bottom: 10px;
+}
+
+.events a {
+  color: #dc143c;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.04rem;
+}
+
+.events a:hover {
+  text-decoration: underline;
 }
 
 .videos-section {
@@ -145,17 +264,96 @@ body {
   box-shadow: 0 2px 10px rgba(0,0,0,0.13);
   padding: 24px 28px;
 }
+
 .videos-list {
   display: flex;
   gap: 24px;
 }
+
 .video-card {
   width: 320px;
 }
-.video-card p {
+
+.video-card p, .video-title {
   margin: 8px 0 0 0;
   font-weight: bold;
   color: #b22222;
+}
+
+.forum-central {
+  margin: 38px 0 0 0;
+}
+
+.forum-central h2 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin-bottom: 22px;
+  color: #222;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.forum-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.forum-topic {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px 12px;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+  background: #fafbfc;
+  min-height: 68px;
+  box-shadow: 0 1px 4px #f0f0f0;
+}
+
+.forum-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  margin-right: 18px;
+  border: 2px solid #dc143c;
+  background: #fff;
+  object-fit: cover;
+}
+
+.forum-topic-main {
+  flex: 1;
+}
+
+.forum-topic-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.forum-topic-title {
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: #dc143c;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.forum-topic-meta {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.forum-topic-respostas {
+  color: #888;
+  font-size: 0.95rem;
+  margin-left: auto;
+}
+
+.forum-topic-body {
+  color: #333;
+  font-size: 1.03rem;
+  margin-top: 3px;
 }
 
 footer {
@@ -165,4 +363,7 @@ footer {
   background: #b22222;
   margin-top: 32px;
   border-radius: 12px 12px 0 0;
+  font-size: 1.09rem;
+  letter-spacing: 0.02em;
+  font-family: 'Montserrat', Arial, sans-serif;
 }
