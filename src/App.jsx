@@ -1,125 +1,114 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 
-// Dados de exemplo (você pode aumentar ou mudar depois)
-const noticiasAutomatizadas = [
-  {
-    title: "São Paulo vence clássico e se aproxima do topo",
-    subtitle: "Com gols de Calleri e Luciano, Tricolor conquista vitória importante.",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
-  },
-  {
-    title: "Feminino do SPFC conquista vaga inédita",
-    subtitle: "Equipe feminina faz história e avança para a final do estadual.",
-    imageUrl: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    title: "Base do São Paulo brilha na Copinha",
-    subtitle: "Garotos do Tricolor fazem excelente campanha e avançam às semifinais.",
-    imageUrl: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    title: "São Paulo anuncia novo patrocínio",
-    subtitle: "Clube fecha contrato milionário para o restante da temporada.",
-    imageUrl: "https://images.unsplash.com/photo-1505843276871-5b0606c61e39?auto=format&fit=crop&w=600&q=80"
-  }
-];
-
-const escudos = {
-  "São Paulo": "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg",
-  "Palmeiras": "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg",
-  "Grêmio": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Gremio_logo.svg",
-  "Atlético-MG": "https://upload.wikimedia.org/wikipedia/commons/8/81/Clube_Atlético_Mineiro_logo.svg"
-};
-
+// Proximos jogos
 const proximosJogos = [
   {
-    casa: "São Paulo",
-    fora: "Palmeiras",
+    adversario: "Palmeiras",
     data: "25/05/2025",
-    hora: "18:30",
+    horario: "16:00",
+    local: "Morumbi",
     campeonato: "Brasileirão"
   },
   {
-    casa: "São Paulo",
-    fora: "Grêmio",
+    adversario: "Santos",
     data: "29/05/2025",
-    hora: "21:00",
+    horario: "19:30",
+    local: "Vila Belmiro",
     campeonato: "Copa do Brasil"
   },
   {
-    casa: "Atlético-MG",
-    fora: "São Paulo",
+    adversario: "Flamengo",
     data: "02/06/2025",
-    hora: "16:00",
+    horario: "21:00",
+    local: "Maracanã",
     campeonato: "Brasileirão"
   }
 ];
 
-const LOGO_X = "https://upload.wikimedia.org/wikipedia/commons/6/6f/X_icon.svg";
-const LOGO_THREADS = "https://seeklogo.com/images/T/threads-logo-9F0C799529-seeklogo.com.png";
-
+// Tópicos do fórum (exemplo)
 const forumTopicos = [
   {
-    id: 1,
-    origem: "x",
-    autor: "JoãoTorcedor",
-    data: "23/05/2025 00:45",
-    titulo: "O que acharam da escalação para o clássico?",
-    respostas: 12,
-    trecho: "Gostei do esquema com três zagueiros, mas acho que faltou ofensividade no segundo tempo..."
+    titulo: "Qual deve ser o time titular para o clássico?",
+    respostas: 42,
+    autor: "tricolor2025"
   },
   {
-    id: 2,
-    origem: "x",
-    autor: "AnaSPFC",
-    data: "22/05/2025 21:15",
-    titulo: "Calleri ou Luciano: quem foi mais decisivo hoje?",
-    respostas: 8,
-    trecho: "Ambos jogaram muito, mas na minha opinião o Calleri foi fundamental com aquele gol de cabeça..."
+    titulo: "Contratações para o segundo semestre",
+    respostas: 18,
+    autor: "spfcnews"
   },
   {
-    id: 3,
-    origem: "threads",
-    autor: "TricolorFiel",
-    data: "22/05/2025 18:00",
-    titulo: "Alguém vai no churrasco da Independente?",
-    respostas: 4,
-    trecho: "Galera, quem vai colar no churrasco esse fim de semana? Bora marcar de ir juntos!"
+    titulo: "Análise do último jogo",
+    respostas: 27,
+    autor: "lucas_ribeiro"
   }
 ];
 
-function getLogoOrigem(origem) {
-  if (origem === "x") return LOGO_X;
-  if (origem === "threads") return LOGO_THREADS;
-  return LOGO_X;
-}
+// Escudos para a sidebar
+const escudos = [
+  "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg",
+  "https://seeklogo.com/images/P/palmeiras-logo-9C3C1B3F12-seeklogo.com.png",
+  "https://logodownload.org/wp-content/uploads/2015/05/santos-logo-escudo.png",
+  "https://upload.wikimedia.org/wikipedia/commons/4/4e/Flamengo_braz_logo.svg"
+];
 
 function App() {
+  const [noticias, setNoticias] = useState([]);
+
+  useEffect(() => {
+    fetch("/noticias.json")
+      .then((res) => res.json())
+      .then((data) => setNoticias(data))
+      .catch(() => setNoticias([]));
+  }, []);
+
   return (
     <div className="main-container">
       {/* CAPA IGUAL MEUTIMAO */}
       <header className="header">
-        <div className="cover-highlight">
-          <img
-            src={noticiasAutomatizadas[0].imageUrl}
-            alt="Capa principal"
-            className="cover-image"
-          />
-          <div className="cover-info">
-            <span className="cover-label">Notícia em destaque</span>
-            <h1 className="cover-title">{noticiasAutomatizadas[0].title}</h1>
-            <p className="cover-subtitle">{noticiasAutomatizadas[0].subtitle}</p>
+        {noticias[0] && (
+          <div className="cover-highlight">
+            <img
+              src={noticias[0].imageUrl}
+              alt="Capa principal"
+              className="cover-image"
+            />
+            <div className="cover-info">
+              <span className="cover-label">Notícia em destaque</span>
+              <h1 className="cover-title">{noticias[0].title}</h1>
+              <p className="cover-subtitle">{noticias[0].subtitle}</p>
+            </div>
           </div>
-        </div>
+        )}
       </header>
 
       <div className="content-layout">
+        {/* SIDEBAR ESQUERDA */}
+        <aside className="sidebar left">
+          <div className="sidebar-section">
+            <h3>Próximos Jogos</h3>
+            <ul className="games-list">
+              {proximosJogos.map((jogo, idx) => (
+                <li key={idx} className="game-card">
+                  <span className="game-vs">
+                    <img src={escudos[0]} alt="SPFC" className="escudo" />
+                    <b>SPFC</b> x <b>{jogo.adversario}</b>
+                  </span>
+                  <span>{jogo.data} - {jogo.horario}</span>
+                  <span>{jogo.local}</span>
+                  <span className="game-champ">{jogo.campeonato}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+
         {/* COLUNA PRINCIPAL */}
         <main className="center-content">
-          {/* NOTÍCIAS GRANDES IGUAL MEUTIMAO */}
+          {/* NOTÍCIAS GRANDES */}
           <div className="big-news-list">
-            {noticiasAutomatizadas.slice(1).map((noticia, idx) => (
+            {noticias.slice(1).map((noticia, idx) => (
               <div className="big-news-card" key={idx}>
                 <img src={noticia.imageUrl} alt={noticia.title} className="big-news-img" />
                 <div className="big-news-text">
@@ -130,120 +119,64 @@ function App() {
             ))}
           </div>
 
-          {/* FÓRUM CENTRAL */}
-          <section className="forum-central">
-            <h2>Discussão / Fórum</h2>
-            <div className="forum-list">
-              {forumTopicos.map(topico => (
-                <div className="forum-topic" key={topico.id}>
-                  <img
-                    src={getLogoOrigem(topico.origem)}
-                    alt={topico.origem}
-                    className="forum-logo"
-                  />
-                  <div className="forum-topic-main">
-                    <div className="forum-topic-header">
-                      <span className="forum-topic-title">{topico.titulo}</span>
-                      <span className="forum-topic-meta">
-                        por <b>{topico.autor}</b> • {topico.data}
-                      </span>
-                      <span className="forum-topic-respostas">
-                        <b>{topico.respostas}</b> respostas
-                      </span>
-                    </div>
-                    <div className="forum-topic-body">
-                      {topico.trecho}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        </main>
-
-        {/* SIDEBAR */}
-        <aside className="sidebar">
-          {/* PROXIMOS JOGOS */}
-          <section className="next-matches">
-            <h2>Próximos Jogos</h2>
-            <ul>
-              {proximosJogos.map((jogo, idx) => (
-                <li className="match-row" key={idx}>
-                  <img src={escudos[jogo.casa]} alt={jogo.casa} className="escudo-time" />
-                  <b>{jogo.casa}</b>
-                  <span className="vs">x</span>
-                  <img src={escudos[jogo.fora]} alt={jogo.fora} className="escudo-time" />
-                  <b>{jogo.fora}</b>
-                  <div className="match-info">
-                    {jogo.data} - {jogo.hora} - {jogo.campeonato}
-                  </div>
+          {/* FÓRUM */}
+          <section className="forum-section">
+            <h2>Fórum do Torcedor</h2>
+            <ul className="forum-list">
+              {forumTopicos.map((topico, idx) => (
+                <li key={idx} className="forum-topic-card">
+                  <h3>{topico.titulo}</h3>
+                  <span>{topico.respostas} respostas • por {topico.autor}</span>
                 </li>
               ))}
             </ul>
-          </section>
-
-          {/* CLASSIFICAÇÃO */}
-          <section className="standings">
-            <h2>Classificação</h2>
-            <table className="standings-table">
-              <thead>
-                <tr>
-                  <th>Clube</th>
-                  <th>Pts</th>
-                  <th>Pos</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <img src={escudos["São Paulo"]} alt="São Paulo" className="escudo-mini" />
-                    São Paulo
-                  </td>
-                  <td>25</td>
-                  <td>3º</td>
-                </tr>
-              </tbody>
-            </table>
-          </section>
-
-          {/* EVENTOS */}
-          <section className="events">
-            <h2>Eventos</h2>
-            <ul>
-              <li>
-                <a href="https://example.com/evento1" target="_blank" rel="noopener noreferrer">
-                  Churrasco da Torcida Independente - 30/05/2025
-                </a>
-              </li>
-              <li>
-                <a href="https://example.com/evento2" target="_blank" rel="noopener noreferrer">
-                  Caravana SPFC para Belo Horizonte - 02/06/2025
-                </a>
-              </li>
-            </ul>
+            <button className="forum-btn">Ver mais tópicos</button>
           </section>
 
           {/* VÍDEOS */}
           <section className="videos-section">
-            <h2>Vídeos em Destaque</h2>
+            <h2>Vídeos Recentes</h2>
             <div className="videos-list">
-              <div className="video-card">
-                <iframe
-                  width="250"
-                  height="140"
-                  src="https://www.youtube.com/embed/VIDEO_ID"
-                  title="Vídeo do São Paulo"
-                  frameBorder="0"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                ></iframe>
-                <p className="video-title">Melhores Momentos - São Paulo x Palmeiras</p>
-              </div>
+              <iframe
+                width="300"
+                height="180"
+                src="https://www.youtube.com/embed/7rYw8YkZ6kU"
+                title="YouTube video 1"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+              <iframe
+                width="300"
+                height="180"
+                src="https://www.youtube.com/embed/cwQgjq0mCdE"
+                title="YouTube video 2"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
             </div>
           </section>
+        </main>
+
+        {/* SIDEBAR DIREITA */}
+        <aside className="sidebar right">
+          <div className="sidebar-section">
+            <h3>Escudos dos Rivais</h3>
+            <div className="escudos-list">
+              {escudos.slice(1).map((escudo, idx) => (
+                <img src={escudo} key={idx} alt="Escudo rival" className="escudo-rival" />
+              ))}
+            </div>
+          </div>
+          <div className="sidebar-section">
+            <h3>Publicidade</h3>
+            <div className="ads-placeholder">
+              <span>Anuncie aqui</span>
+            </div>
+          </div>
         </aside>
       </div>
-
       <footer>
         <div>SPFC News - 100% automatizado por IA • 2025</div>
       </footer>
