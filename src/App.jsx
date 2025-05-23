@@ -6,7 +6,7 @@ const noticiasAutomatizadas = [
   {
     title: "São Paulo vence clássico e se aproxima do topo",
     subtitle: "Com gols de Calleri e Luciano, Tricolor conquista vitória importante.",
-    imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
   },
   {
     title: "Feminino do SPFC conquista vaga inédita",
@@ -22,6 +22,38 @@ const noticiasAutomatizadas = [
     title: "São Paulo anuncia novo patrocínio",
     subtitle: "Clube fecha contrato milionário para o restante da temporada.",
     imageUrl: "https://images.unsplash.com/photo-1505843276871-5b0606c61e39?auto=format&fit=crop&w=600&q=80"
+  }
+];
+
+// URLs dos escudos (você pode trocar por outros de sua preferência)
+const escudos = {
+  "São Paulo": "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg",
+  "Palmeiras": "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg",
+  "Grêmio": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Gremio_logo.svg",
+  "Atlético-MG": "https://upload.wikimedia.org/wikipedia/commons/8/81/Clube_Atlético_Mineiro_logo.svg"
+};
+
+const proximosJogos = [
+  {
+    casa: "São Paulo",
+    fora: "Palmeiras",
+    data: "25/05/2025",
+    hora: "18:30",
+    campeonato: "Brasileirão"
+  },
+  {
+    casa: "São Paulo",
+    fora: "Grêmio",
+    data: "29/05/2025",
+    hora: "21:00",
+    campeonato: "Copa do Brasil"
+  },
+  {
+    casa: "Atlético-MG",
+    fora: "São Paulo",
+    data: "02/06/2025",
+    hora: "16:00",
+    campeonato: "Brasileirão"
   }
 ];
 
@@ -70,18 +102,20 @@ function App() {
           <section className="next-matches">
             <h3>Próximos Jogos</h3>
             <ul>
-              <li>
-                <b>São Paulo x Palmeiras</b> <br />
-                25/05/2025 - 18:30 - Brasileirão
-              </li>
-              <li>
-                <b>São Paulo x Grêmio</b> <br />
-                29/05/2025 - 21:00 - Copa do Brasil
-              </li>
-              <li>
-                <b>Atlético-MG x São Paulo</b> <br />
-                02/06/2025 - 16:00 - Brasileirão
-              </li>
+              {proximosJogos.map((jogo, idx) => (
+                <li key={idx} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                  <img src={escudos[jogo.casa]} alt={jogo.casa} style={{ width: 32, height: 32, marginRight: 6 }} />
+                  <b>{jogo.casa}</b>
+                  <span style={{ margin: "0 6px" }}>x</span>
+                  <img src={escudos[jogo.fora]} alt={jogo.fora} style={{ width: 32, height: 32, marginRight: 6 }} />
+                  <b>{jogo.fora}</b>
+                  <div style={{ marginLeft: 10, fontSize: "0.9rem" }}>
+                    <div>
+                      {jogo.data} - {jogo.hora} - {jogo.campeonato}
+                    </div>
+                  </div>
+                </li>
+              ))}
             </ul>
           </section>
 
@@ -98,7 +132,10 @@ function App() {
               </thead>
               <tbody>
                 <tr>
-                  <td>São Paulo</td>
+                  <td>
+                    <img src={escudos["São Paulo"]} alt="São Paulo" style={{ width: 22, verticalAlign: "middle", marginRight: 5 }} />
+                    São Paulo
+                  </td>
                   <td>25</td>
                   <td>3º</td>
                 </tr>
