@@ -1,7 +1,30 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 
-// Escudos dos times
+// Fallback das notícias caso o JSON não carregue
+const noticiasFallback = [
+  {
+    title: "São Paulo vence clássico e se aproxima do topo",
+    subtitle: "Com gols de Calleri e Luciano, Tricolor conquista vitória importante.",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
+  },
+  {
+    title: "Feminino do SPFC conquista vaga inédita",
+    subtitle: "Equipe feminina faz história e avança para a final do estadual.",
+    imageUrl: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    title: "Base do São Paulo brilha na Copinha",
+    subtitle: "Garotos do Tricolor fazem excelente campanha e avançam às semifinais.",
+    imageUrl: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    title: "São Paulo anuncia novo patrocínio",
+    subtitle: "Clube fecha contrato milionário para o restante da temporada.",
+    imageUrl: "https://images.unsplash.com/photo-1505843276871-5b0606c61e39?auto=format&fit=crop&w=600&q=80"
+  }
+];
+
 const escudos = {
   "São Paulo": "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg",
   "Palmeiras": "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg",
@@ -63,30 +86,6 @@ const forumTopicos = [
     titulo: "Alguém vai no churrasco da Independente?",
     respostas: 4,
     trecho: "Galera, quem vai colar no churrasco esse fim de semana? Bora marcar de ir juntos!"
-  }
-];
-
-// Notícias: agora carregadas do JSON, com fallback para notícias antigas
-const noticiasFallback = [
-  {
-    title: "São Paulo vence clássico e se aproxima do topo",
-    subtitle: "Com gols de Calleri e Luciano, Tricolor conquista vitória importante.",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
-  },
-  {
-    title: "Feminino do SPFC conquista vaga inédita",
-    subtitle: "Equipe feminina faz história e avança para a final do estadual.",
-    imageUrl: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    title: "Base do São Paulo brilha na Copinha",
-    subtitle: "Garotos do Tricolor fazem excelente campanha e avançam às semifinais.",
-    imageUrl: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    title: "São Paulo anuncia novo patrocínio",
-    subtitle: "Clube fecha contrato milionário para o restante da temporada.",
-    imageUrl: "https://images.unsplash.com/photo-1505843276871-5b0606c61e39?auto=format&fit=crop&w=600&q=80"
   }
 ];
 
