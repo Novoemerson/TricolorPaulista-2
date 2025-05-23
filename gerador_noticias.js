@@ -1,38 +1,19 @@
-const fetch = require('node-fetch');
 const fs = require('fs');
-
-const API_KEY = process.env.COHERE_API_KEY;
+const fetch = require('node-fetch');
 
 async function gerarNoticia() {
-  const prompt = "Escreva uma notícia curta, otimista e fictícia sobre o São Paulo Futebol Clube para torcedores.";
-
-  const response = await fetch('https://api.cohere.ai/v1/chat', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: "command-r-plus", // Você pode trocar para "command" para consumir menos créditos
-      message: prompt,
-      temperature: 0.9,
-      max_tokens: 400,
-      stream: false
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error(`Erro na IA: ${response.status} ${await response.text()}`);
-  }
-
-  const data = await response.json();
-  const noticia = data.text?.trim() || "Não foi possível gerar notícia.";
-
-  fs.writeFileSync('public/noticias.json', JSON.stringify({ noticia }, null, 2), 'utf-8');
-  console.log("Notícia gerada e salva em public/noticias.json!");
+  // 1. Gera texto com Cohere
+  // 2. Busca imagem relacionada usando Unsplash ou outra API
+  // 3. Baixa imagem para /public/images
+  // 4. Atualiza noticias.json com texto e caminho da imagem
+  
+  // Exemplo fictício:
+  const noticia = {
+    title: "Novo reforço chega ao São Paulo",
+    subtitle: "Atacante argentino assina até 2026.",
+    imageUrl: "/images/novo-reforco.jpg"
+  };
+  fs.writeFileSync('public/noticias.json', JSON.stringify([noticia], null, 2));
+  // Faça download da imagem para /public/images/novo-reforco.jpg
 }
-
-gerarNoticia().catch(err => {
-  console.error("Erro ao gerar notícia:", err);
-  process.exit(1);
-});
+gerarNoticia();
