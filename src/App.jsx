@@ -55,11 +55,10 @@ const proximosJogos = [
   }
 ];
 
-// Logos de origem
 const LOGO_X = "https://upload.wikimedia.org/wikipedia/commons/6/6f/X_icon.svg";
 const LOGO_THREADS = "https://seeklogo.com/images/T/threads-logo-9F0C799529-seeklogo.com.png";
 
-// Dados simulados para o Fórum
+// Fórum simulando origem X ou Threads
 const forumTopicos = [
   {
     id: 1,
@@ -68,8 +67,7 @@ const forumTopicos = [
     data: "23/05/2025 00:45",
     titulo: "O que acharam da escalação para o clássico?",
     respostas: 12,
-    trecho: "Gostei do esquema com três zagueiros, mas acho que faltou ofensividade no segundo tempo...",
-    link: "#"
+    trecho: "Gostei do esquema com três zagueiros, mas acho que faltou ofensividade no segundo tempo..."
   },
   {
     id: 2,
@@ -78,8 +76,7 @@ const forumTopicos = [
     data: "22/05/2025 21:15",
     titulo: "Calleri ou Luciano: quem foi mais decisivo hoje?",
     respostas: 8,
-    trecho: "Ambos jogaram muito, mas na minha opinião o Calleri foi fundamental com aquele gol de cabeça...",
-    link: "#"
+    trecho: "Ambos jogaram muito, mas na minha opinião o Calleri foi fundamental com aquele gol de cabeça..."
   },
   {
     id: 3,
@@ -88,8 +85,7 @@ const forumTopicos = [
     data: "22/05/2025 18:00",
     titulo: "Alguém vai no churrasco da Independente?",
     respostas: 4,
-    trecho: "Galera, quem vai colar no churrasco esse fim de semana? Bora marcar de ir juntos!",
-    link: "#"
+    trecho: "Galera, quem vai colar no churrasco esse fim de semana? Bora marcar de ir juntos!"
   }
 ];
 
@@ -133,7 +129,7 @@ function App() {
             ))}
           </div>
 
-          {/* Fórum central estilo MeuTimão, sem tag de tipo e sem botão novo tópico */}
+          {/* Fórum central sem links nos títulos */}
           <section className="forum-central">
             <h3 style={{ margin: "32px 0 16px" }}>Discussão / Fórum</h3>
             <div className="forum-list">
@@ -152,12 +148,12 @@ function App() {
                   />
                   <div style={{ flex: 1 }}>
                     <div style={{ display: "flex", alignItems: "center", marginBottom: 4, flexWrap: "wrap" }}>
-                      <a href={topico.link} style={{
+                      <span style={{
                         fontWeight: "bold", color: "#dc143c", fontSize: "1.12rem", marginRight: 8,
                         textDecoration: "none"
                       }}>
                         {topico.titulo}
-                      </a>
+                      </span>
                       <span style={{ color: "#666", fontSize: "0.9rem", marginRight: 10 }}>
                         por <b>{topico.autor}</b> • {topico.data}
                       </span>
@@ -250,7 +246,6 @@ function App() {
                 ></iframe>
                 <p style={{ fontSize: "0.95rem" }}>Melhores Momentos - São Paulo x Palmeiras</p>
               </div>
-              {/* Adicione mais vídeos como desejar */}
             </div>
           </section>
         </aside>
