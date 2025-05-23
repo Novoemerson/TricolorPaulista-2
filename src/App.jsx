@@ -6,30 +6,30 @@ const noticiasFallback = [
   {
     title: "São Paulo vence clássico e se aproxima do topo",
     subtitle: "Com gols de Calleri e Luciano, o Tricolor soma mais três pontos e anima a torcida na luta pela liderança.",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
+    imageUrl: "/images/capa-saopaulo-classico.jpg" // Use uma imagem local e coloque em public/images/
   },
   {
     title: "Feminino do SPFC conquista vaga inédita",
     subtitle: "O time feminino faz história e avança para a final do estadual após campanha emocionante e cheia de superação.",
-    imageUrl: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80"
+    imageUrl: "/images/spfc-feminino.jpg" // Imagem local em public/images/
   },
   {
     title: "Base do São Paulo brilha na Copinha",
     subtitle: "A garotada do Tricolor mostra talento e leva o clube à semifinal da Copa São Paulo.",
-    imageUrl: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80"
+    imageUrl: "/images/spfc-base-copinha.jpg" // Imagem local em public/images/
   },
   {
     title: "São Paulo anuncia novo patrocínio",
     subtitle: "Tricolor fecha contrato milionário e fortalece o elenco para a sequência da temporada.",
-    imageUrl: "https://images.unsplash.com/photo-1505843276871-5b0606c61e39?auto=format&fit=crop&w=600&q=80"
+    imageUrl: "/images/spfc-patrocinio.jpg" // Imagem local em public/images/
   }
 ];
 
 const escudos = {
-  "São Paulo": "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg",
-  "Palmeiras": "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg",
-  "Grêmio": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Gremio_logo.svg",
-  "Atlético-MG": "https://upload.wikimedia.org/wikipedia/commons/8/81/Clube_Atlético_Mineiro_logo.svg"
+  "São Paulo": "/images/escudo-saopaulo.svg",
+  "Palmeiras": "/images/escudo-palmeiras.svg",
+  "Grêmio": "/images/escudo-gremio.svg",
+  "Atlético-MG": "/images/escudo-atletico-mg.svg"
 };
 
 const proximosJogos = [
@@ -56,8 +56,8 @@ const proximosJogos = [
   }
 ];
 
-const LOGO_X = "https://upload.wikimedia.org/wikipedia/commons/6/6f/X_icon.svg";
-const LOGO_THREADS = "https://seeklogo.com/images/T/threads-logo-9F0C799529-seeklogo.com.png";
+const LOGO_X = "/images/logo-x.svg";
+const LOGO_THREADS = "/images/logo-threads.png";
 
 const forumTopicos = [
   {
@@ -95,8 +95,7 @@ function getLogoOrigem(origem) {
   return LOGO_X;
 }
 
-// Helper de imagem com fallback
-function ImgWithFallback({ src, alt, className, fallback = "/placeholder.png", ...props }) {
+function ImgWithFallback({ src, alt, className, fallback = "/images/placeholder.png", ...props }) {
   const [imgSrc, setImgSrc] = useState(src);
   return (
     <img
@@ -132,7 +131,7 @@ function App() {
         <div className="cover-highlight">
           <ImgWithFallback
             src={noticias[0]?.imageUrl}
-            alt="Notícia em destaque: capa do São Paulo"
+            alt="Capa principal da notícia em destaque"
             className="cover-image"
           />
           <div className="cover-info">
@@ -152,7 +151,7 @@ function App() {
               <div className="big-news-card" key={idx}>
                 <ImgWithFallback
                   src={noticia.imageUrl}
-                  alt={noticia.title}
+                  alt={`Foto da matéria: ${noticia.title}`}
                   className="big-news-img"
                 />
                 <div className="big-news-text">
@@ -171,7 +170,7 @@ function App() {
                 <div className="forum-topic" key={topico.id}>
                   <ImgWithFallback
                     src={getLogoOrigem(topico.origem)}
-                    alt={topico.origem}
+                    alt={`Logo da origem do tópico (${topico.origem})`}
                     className="forum-logo"
                   />
                   <div className="forum-topic-main">
