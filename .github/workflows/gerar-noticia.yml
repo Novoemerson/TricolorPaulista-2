@@ -1,10 +1,12 @@
-name: Gerar notícia automática
+name: Atualizar notícias e imagens com IA
 
 on:
+  schedule:
+    - cron: '*/3 * * * *' # a cada 3 minutos
   workflow_dispatch:
 
 jobs:
-  gerar-noticia:
+  gerar-e-atualizar:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout código
@@ -13,15 +15,16 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
-      - name: Gerar notícia
+      - name: Rodar gerador IA
         env:
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
-        run: node gerador_noticias.js
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        run: node src/gerador_noticias.js
 
-      - name: Commit e push do noticias.json
+      - name: Commit e push das mudanças
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/noticias.json
-          git commit -m "Notícia gerada automaticamente" || echo "Nada para commitar"
+          git add public/noticias.json public/images/
+          git commit -m "Atualização automática de notícias e imagens via IA"
           git push
