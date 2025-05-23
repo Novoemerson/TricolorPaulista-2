@@ -1,6 +1,30 @@
 import React from "react";
 import "./App.css";
 
+// Exemplo de notícias automatizadas vindas da IA/API
+const noticiasAutomatizadas = [
+  {
+    title: "São Paulo vence clássico e se aproxima do topo",
+    subtitle: "Com gols de Calleri e Luciano, Tricolor conquista vitória importante.",
+    imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    title: "Feminino do SPFC conquista vaga inédita",
+    subtitle: "Equipe feminina faz história e avança para a final do estadual.",
+    imageUrl: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    title: "Base do São Paulo brilha na Copinha",
+    subtitle: "Garotos do Tricolor fazem excelente campanha e avançam às semifinais.",
+    imageUrl: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    title: "São Paulo anuncia novo patrocínio",
+    subtitle: "Clube fecha contrato milionário para o restante da temporada.",
+    imageUrl: "https://images.unsplash.com/photo-1505843276871-5b0606c61e39?auto=format&fit=crop&w=600&q=80"
+  }
+];
+
 function App() {
   return (
     <div className="main-container">
@@ -10,14 +34,14 @@ function App() {
         <div className="main-news-cover">
           {/* Notícia principal automatizada */}
           <img
-            src="/placeholder-capa.jpg"
+            src={noticiasAutomatizadas[0].imageUrl}
             alt="Capa principal"
             className="main-news-image"
           />
           <div className="main-news-content">
             <span className="news-label">Notícia em destaque</span>
-            <h2 className="main-news-title">Título principal automatizado</h2>
-            <p className="main-news-subtitle">Subtítulo gerado pela IA</p>
+            <h2 className="main-news-title">{noticiasAutomatizadas[0].title}</h2>
+            <p className="main-news-subtitle">{noticiasAutomatizadas[0].subtitle}</p>
           </div>
         </div>
       </header>
@@ -27,13 +51,13 @@ function App() {
         <main className="news-cards-section">
           <h3>Últimas Notícias</h3>
           <div className="news-cards-list">
-            {/* Cards automáticos de notícias */}
-            {[1,2,3,4].map((n) => (
-              <div className="news-card" key={n}>
-                <img src={`/placeholder-${n}.jpg`} alt="Notícia" />
+            {/* Cards automáticos de notícias, exceto a principal */}
+            {noticiasAutomatizadas.slice(1).map((noticia, idx) => (
+              <div className="news-card" key={idx}>
+                <img src={noticia.imageUrl} alt={noticia.title} />
                 <div className="news-card-content">
-                  <h4>Título automatizado {n}</h4>
-                  <p>Subtítulo gerado pela IA {n}</p>
+                  <h4>{noticia.title}</h4>
+                  <p>{noticia.subtitle}</p>
                 </div>
               </div>
             ))}
