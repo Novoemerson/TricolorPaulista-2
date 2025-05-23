@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
 
-const HF_API_URL = "https://api-inference.huggingface.co/models/bigscience/bloomz-560m";
+const HF_API_URL = "https://api-inference.huggingface.co/models/google/gemma-2b-it";
 const HF_API_TOKEN = process.env.HF_API_TOKEN; // O token está salvo nos segredos do GitHub
 
 async function gerarNoticia() {
