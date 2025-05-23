@@ -1,20 +1,30 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
 
-const HF_API_URL = "https://api-inference.huggingface.co/models/gpt2";
-const HF_API_TOKEN = process.env.HF_API_TOKEN; // O token está salvo nos segredos do GitHub
+const API_KEY = process.env.OPENROUTER_API_KEY;
+// Modelo escolhido: openai/gpt-4.1 (você pode trocar para outro modelo OpenRouter se quiser)
+const MODEL = "openai/gpt-4.1";
 
 async function gerarNoticia() {
-  // Prompt em português para a IA
-  const prompt = "Crie uma notícia fictícia, curta e positiva sobre o São Paulo Futebol Clube para publicar em um site de torcedores:";
+  const prompt = "Escreva uma notícia curta, otimista e fictícia sobre o São Paulo Futebol Clube para torcedores.";
 
-  const response = await fetch(HF_API_URL, {
-    method: "POST",
+  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
     headers: {
-      "Authorization": `Bearer ${HF_API_TOKEN}`,
-      "Content-Type": "application/json"
+      'Authorization': `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json'
+      // 'HTTP-Referer': 'https://seusite.com', // opcional
+      // 'X-Title': 'Tricolor Paulista - Geração de Notícias' // opcional
     },
-    body: JSON.stringify({ inputs: prompt })
+    body: JSON.stringify({
+      model: MODEL,
+      messages: [
+        { role: "system", content: "Você é um redator esportivo criativo e otimista." },
+        { role: "user", content: prompt }
+      ],
+      max_tokens: 400,
+      temperature: 0.9
+    })
   });
 
   if (!response.ok) {
@@ -22,10 +32,11 @@ async function gerarNoticia() {
   }
 
   const data = await response.json();
-  // O texto gerado está em `data[0].generated_text`
-  const noticia = data[0]?.generated_text || "Não foi possível gerar notícia.";
+  // Para OpenRouter, a resposta está em choices[0].message.content
+  const noticia = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
+    ? data.choices[0].message.content.trim()
+    : "Não foi possível gerar notícia.";
 
-  // Salva no noticias.json
   fs.writeFileSync('public/noticias.json', JSON.stringify({ noticia }, null, 2), 'utf-8');
   console.log("Notícia gerada e salva em public/noticias.json!");
 }
