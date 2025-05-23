@@ -15,7 +15,7 @@ jobs:
 
       - name: Gerar notícia
         env:
-          HF_API_TOKEN: ${{ secrets.HF_API_TOKEN }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: node gerador_noticias.js
 
       - name: Commit e push do noticias.json
