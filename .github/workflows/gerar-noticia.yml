@@ -13,7 +13,7 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
-      -       - name: Gerar notícia
+      - name: Gerar notícia
         env:
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
         run: node gerador_noticias.js
