@@ -1,178 +1,269 @@
 import React, { useEffect, useState } from "react";
+import "./App.css";
 
-// Estilos no próprio arquivo para manter o visual igual ao HTML original
-const style = `
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #ffffff;
-    color: #333;
+// Escudos dos times
+const escudos = {
+  "São Paulo": "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg",
+  "Palmeiras": "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg",
+  "Grêmio": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Gremio_logo.svg",
+  "Atlético-MG": "https://upload.wikimedia.org/wikipedia/commons/8/81/Clube_Atlético_Mineiro_logo.svg"
+};
+
+const proximosJogos = [
+  {
+    casa: "São Paulo",
+    fora: "Palmeiras",
+    data: "25/05/2025",
+    hora: "18:30",
+    campeonato: "Brasileirão"
+  },
+  {
+    casa: "São Paulo",
+    fora: "Grêmio",
+    data: "29/05/2025",
+    hora: "21:00",
+    campeonato: "Copa do Brasil"
+  },
+  {
+    casa: "Atlético-MG",
+    fora: "São Paulo",
+    data: "02/06/2025",
+    hora: "16:00",
+    campeonato: "Brasileirão"
+  }
+];
+
+const LOGO_X = "https://upload.wikimedia.org/wikipedia/commons/6/6f/X_icon.svg";
+const LOGO_THREADS = "https://seeklogo.com/images/T/threads-logo-9F0C799529-seeklogo.com.png";
+
+const forumTopicos = [
+  {
+    id: 1,
+    origem: "x",
+    autor: "JoãoTorcedor",
+    data: "23/05/2025 00:45",
+    titulo: "O que acharam da escalação para o clássico?",
+    respostas: 12,
+    trecho: "Gostei do esquema com três zagueiros, mas acho que faltou ofensividade no segundo tempo..."
+  },
+  {
+    id: 2,
+    origem: "x",
+    autor: "AnaSPFC",
+    data: "22/05/2025 21:15",
+    titulo: "Calleri ou Luciano: quem foi mais decisivo hoje?",
+    respostas: 8,
+    trecho: "Ambos jogaram muito, mas na minha opinião o Calleri foi fundamental com aquele gol de cabeça..."
+  },
+  {
+    id: 3,
+    origem: "threads",
+    autor: "TricolorFiel",
+    data: "22/05/2025 18:00",
+    titulo: "Alguém vai no churrasco da Independente?",
+    respostas: 4,
+    trecho: "Galera, quem vai colar no churrasco esse fim de semana? Bora marcar de ir juntos!"
+  }
+];
+
+// Notícias: agora carregadas do JSON, com fallback para notícias antigas
+const noticiasFallback = [
+  {
+    title: "São Paulo vence clássico e se aproxima do topo",
+    subtitle: "Com gols de Calleri e Luciano, Tricolor conquista vitória importante.",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
+  },
+  {
+    title: "Feminino do SPFC conquista vaga inédita",
+    subtitle: "Equipe feminina faz história e avança para a final do estadual.",
+    imageUrl: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    title: "Base do São Paulo brilha na Copinha",
+    subtitle: "Garotos do Tricolor fazem excelente campanha e avançam às semifinais.",
+    imageUrl: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    title: "São Paulo anuncia novo patrocínio",
+    subtitle: "Clube fecha contrato milionário para o restante da temporada.",
+    imageUrl: "https://images.unsplash.com/photo-1505843276871-5b0606c61e39?auto=format&fit=crop&w=600&q=80"
+  }
+];
+
+function getLogoOrigem(origem) {
+  if (origem === "x") return LOGO_X;
+  if (origem === "threads") return LOGO_THREADS;
+  return LOGO_X;
 }
-header {
-    background-color: #cc0000;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-}
-.nav {
-    display: flex;
-    justify-content: center;
-    padding: 15px;
-    background: #f4f4f4;
-    position: fixed;
-    top: 60px;
-    width: 100%;
-}
-.nav a {
-    text-decoration: none;
-    color: white;
-    background: #cc0000;
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin: 5px;
-}
-.container {
-    display: flex;
-    margin-top: 110px;
-}
-.sidebar {
-    width: 250px;
-    background: #f4f4f4;
-    padding: 15px;
-    height: auto;
-}
-.posts-container {
-    flex: 1;
-    padding: 20px;
-}
-.post {
-    background: white;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-}
-.post img {
-    width: 100%;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-footer {
-    background: #cc0000;
-    color: white;
-    text-align: center;
-    padding: 15px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-footer a {
-    color: #ffeaea;
-    text-decoration: underline;
-}
-`;
 
 function App() {
-    // Buscando notícias do JSON
-    const [noticias, setNoticias] = useState([]);
+  const [noticias, setNoticias] = useState(noticiasFallback);
 
-    useEffect(() => {
-        fetch("/noticias.json")
-            .then(res => res.json())
-            .then(data => setNoticias(data))
-            .catch(() => setNoticias([]));
-    }, []);
+  useEffect(() => {
+    fetch("/noticias.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("Falha ao carregar JSON");
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) setNoticias(data);
+      })
+      .catch(() => setNoticias(noticiasFallback));
+  }, []);
 
-    return (
-        <>
-            {/* Aplica o CSS do HTML original */}
-            <style>{style}</style>
-            <header>Blog Tricolor-SP</header>
+  return (
+    <div className="main-container">
+      {/* CAPA IGUAL MEUTIMAO */}
+      <header className="header">
+        <div className="cover-highlight">
+          <img
+            src={noticias[0]?.imageUrl}
+            alt="Capa principal"
+            className="cover-image"
+          />
+          <div className="cover-info">
+            <span className="cover-label">Notícia em destaque</span>
+            <h1 className="cover-title">{noticias[0]?.title}</h1>
+            <p className="cover-subtitle">{noticias[0]?.subtitle}</p>
+          </div>
+        </div>
+      </header>
 
-            <div className="nav">
-                <a href="#">🏆 Títulos</a>
-                <a href="#">⚽ Jogos</a>
-                <a href="#">🔥 Elenco</a>
-                <a href="#">📢 Notícias</a>
+      <div className="content-layout">
+        {/* COLUNA PRINCIPAL */}
+        <main className="center-content">
+          {/* NOTÍCIAS GRANDES IGUAL MEUTIMAO */}
+          <div className="big-news-list">
+            {noticias.slice(1).map((noticia, idx) => (
+              <div className="big-news-card" key={idx}>
+                <img src={noticia.imageUrl} alt={noticia.title} className="big-news-img" />
+                <div className="big-news-text">
+                  <h2 className="big-news-title">{noticia.title}</h2>
+                  <p className="big-news-subtitle">{noticia.subtitle}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* FÓRUM CENTRAL */}
+          <section className="forum-central">
+            <h2>Discussão / Fórum</h2>
+            <div className="forum-list">
+              {forumTopicos.map(topico => (
+                <div className="forum-topic" key={topico.id}>
+                  <img
+                    src={getLogoOrigem(topico.origem)}
+                    alt={topico.origem}
+                    className="forum-logo"
+                  />
+                  <div className="forum-topic-main">
+                    <div className="forum-topic-header">
+                      <span className="forum-topic-title">{topico.titulo}</span>
+                      <span className="forum-topic-meta">
+                        por <b>{topico.autor}</b> • {topico.data}
+                      </span>
+                      <span className="forum-topic-respostas">
+                        <b>{topico.respostas}</b> respostas
+                      </span>
+                    </div>
+                    <div className="forum-topic-body">
+                      {topico.trecho}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
+          </section>
+        </main>
 
-            <div className="container">
-                {/* Barra lateral */}
-                <aside className="sidebar">
-                    <h2>Categorias</h2>
-                    <ul>
-                        <li>🔴 São Paulo</li>
-                        <li>⚽ Jogos</li>
-                        <li>🔥 Transferências</li>
-                        <li>🏆 História</li>
-                    </ul>
-                </aside>
+        {/* SIDEBAR */}
+        <aside className="sidebar">
+          {/* PROXIMOS JOGOS */}
+          <section className="next-matches">
+            <h2>Próximos Jogos</h2>
+            <ul>
+              {proximosJogos.map((jogo, idx) => (
+                <li className="match-row" key={idx}>
+                  <img src={escudos[jogo.casa]} alt={jogo.casa} className="escudo-time" />
+                  <b>{jogo.casa}</b>
+                  <span className="vs">x</span>
+                  <img src={escudos[jogo.fora]} alt={jogo.fora} className="escudo-time" />
+                  <b>{jogo.fora}</b>
+                  <div className="match-info">
+                    {jogo.data} - {jogo.hora} - {jogo.campeonato}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
 
-                {/* Área principal */}
-                <main className="posts-container">
-                    <div className="post">
-                        <h2>🏆 Últimos Títulos do São Paulo FC</h2>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Sao_Paulo_FC_logo.svg" alt="Escudo do São Paulo FC" />
-                        <p>O São Paulo conquistou a Copa do Brasil em 2023 e segue forte na Libertadores 2025!</p>
-                    </div>
+          {/* CLASSIFICAÇÃO */}
+          <section className="standings">
+            <h2>Classificação</h2>
+            <table className="standings-table">
+              <thead>
+                <tr>
+                  <th>Clube</th>
+                  <th>Pts</th>
+                  <th>Pos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <img src={escudos["São Paulo"]} alt="São Paulo" className="escudo-mini" />
+                    São Paulo
+                  </td>
+                  <td>25</td>
+                  <td>3º</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
 
-                    <div className="post">
-                        <h2>⚽ Próximos Jogos</h2>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Sao_Paulo_FC_players.jpg" alt="Jogadores do São Paulo FC" />
-                        <p>🔴 São Paulo enfrenta o Náutico pela Copa do Brasil no dia 20/05.</p>
-                        <p>⚽ Depois encara o Mirassol pelo Brasileirão no dia 24/05.</p>
-                    </div>
+          {/* EVENTOS */}
+          <section className="events">
+            <h2>Eventos</h2>
+            <ul>
+              <li>
+                <a href="https://example.com/evento1" target="_blank" rel="noopener noreferrer">
+                  Churrasco da Torcida Independente - 30/05/2025
+                </a>
+              </li>
+              <li>
+                <a href="https://example.com/evento2" target="_blank" rel="noopener noreferrer">
+                  Caravana SPFC para Belo Horizonte - 02/06/2025
+                </a>
+              </li>
+            </ul>
+          </section>
 
-                    <div className="post">
-                        <h2>🔥 Destaques do Elenco</h2>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Sao_Paulo_FC_stadium.jpg" alt="Estádio do São Paulo FC" />
-                        <p>Alan Franco recusou a primeira oferta de renovação, mas negociações seguem em andamento.</p>
-                    </div>
-
-                    {/* Renderiza notícias dinâmicas */}
-                    <div className="post">
-                        <h2>📢 Últimas Notícias do São Paulo FC</h2>
-                        <ul>
-                            {noticias.length === 0 && (
-                                <>
-                                    <li>🔴 São Paulo se reapresenta no CT da Barra Funda para duelo contra o Náutico.</li>
-                                    <li>⚽ Alan Franco negocia renovação de contrato com o clube.</li>
-                                    <li>🔥 Tricolor busca reforços para o segundo semestre da temporada.</li>
-                                </>
-                            )}
-                            {noticias.map((noticia, idx) => (
-                                <li key={idx}>
-                                    <strong>{noticia.title}</strong>
-                                    <br />
-                                    <span style={{ color: "#cc0000" }}>{noticia.subtitle}</span>
-                                    {noticia.imageUrl && (
-                                        <div>
-                                            <img src={noticia.imageUrl} alt={noticia.title} style={{ maxWidth: "200px", margin: "10px 0" }} />
-                                        </div>
-                                    )}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </main>
+          {/* VÍDEOS */}
+          <section className="videos-section">
+            <h2>Vídeos em Destaque</h2>
+            <div className="videos-list">
+              <div className="video-card">
+                <iframe
+                  width="250"
+                  height="140"
+                  src="https://www.youtube.com/embed/VIDEO_ID"
+                  title="Vídeo do São Paulo"
+                  frameBorder="0"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                ></iframe>
+                <p className="video-title">Melhores Momentos - São Paulo x Palmeiras</p>
+              </div>
             </div>
-            {/* Rodapé */}
-            <footer>
-                <p>&copy; 2025 Tricolor-SP | Todos os direitos reservados</p>
-                <p>
-                    Siga-nos nas redes sociais: <a href="#">Instagram</a> | <a href="#">Twitter</a>
-                </p>
-            </footer>
-        </>
-    );
+          </section>
+        </aside>
+      </div>
+
+      <footer>
+        <div>SPFC News - 100% automatizado por IA • 2025</div>
+      </footer>
+    </div>
+  );
 }
 
 export default App;
