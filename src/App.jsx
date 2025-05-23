@@ -5,22 +5,22 @@ import "./App.css";
 const noticiasFallback = [
   {
     title: "São Paulo vence clássico e se aproxima do topo",
-    subtitle: "Com gols de Calleri e Luciano, Tricolor conquista vitória importante.",
+    subtitle: "Com gols de Calleri e Luciano, o Tricolor soma mais três pontos e anima a torcida na luta pela liderança.",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
   },
   {
     title: "Feminino do SPFC conquista vaga inédita",
-    subtitle: "Equipe feminina faz história e avança para a final do estadual.",
+    subtitle: "O time feminino faz história e avança para a final do estadual após campanha emocionante e cheia de superação.",
     imageUrl: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80"
   },
   {
     title: "Base do São Paulo brilha na Copinha",
-    subtitle: "Garotos do Tricolor fazem excelente campanha e avançam às semifinais.",
+    subtitle: "A garotada do Tricolor mostra talento e leva o clube à semifinal da Copa São Paulo.",
     imageUrl: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80"
   },
   {
     title: "São Paulo anuncia novo patrocínio",
-    subtitle: "Clube fecha contrato milionário para o restante da temporada.",
+    subtitle: "Tricolor fecha contrato milionário e fortalece o elenco para a sequência da temporada.",
     imageUrl: "https://images.unsplash.com/photo-1505843276871-5b0606c61e39?auto=format&fit=crop&w=600&q=80"
   }
 ];
@@ -38,7 +38,7 @@ const proximosJogos = [
     fora: "Palmeiras",
     data: "25/05/2025",
     hora: "18:30",
-    campeonato: "Brasileirão"
+    campeonato: "Campeonato Brasileiro"
   },
   {
     casa: "São Paulo",
@@ -52,7 +52,7 @@ const proximosJogos = [
     fora: "São Paulo",
     data: "02/06/2025",
     hora: "16:00",
-    campeonato: "Brasileirão"
+    campeonato: "Campeonato Brasileiro"
   }
 ];
 
@@ -67,7 +67,7 @@ const forumTopicos = [
     data: "23/05/2025 00:45",
     titulo: "O que acharam da escalação para o clássico?",
     respostas: 12,
-    trecho: "Gostei do esquema com três zagueiros, mas acho que faltou ofensividade no segundo tempo..."
+    trecho: "Gostei do esquema com três zagueiros, mas acho que faltou ofensividade no segundo tempo. O que vocês acham?"
   },
   {
     id: 2,
@@ -76,7 +76,7 @@ const forumTopicos = [
     data: "22/05/2025 21:15",
     titulo: "Calleri ou Luciano: quem foi mais decisivo hoje?",
     respostas: 8,
-    trecho: "Ambos jogaram muito, mas na minha opinião o Calleri foi fundamental com aquele gol de cabeça..."
+    trecho: "Ambos atuaram muito bem, mas para mim o Calleri foi fundamental com aquele gol de cabeça no final!"
   },
   {
     id: 3,
@@ -85,7 +85,7 @@ const forumTopicos = [
     data: "22/05/2025 18:00",
     titulo: "Alguém vai no churrasco da Independente?",
     respostas: 4,
-    trecho: "Galera, quem vai colar no churrasco esse fim de semana? Bora marcar de ir juntos!"
+    trecho: "Galera, quem vai no churras esse fim de semana? Bora marcar de ir juntos e apoiar o Tricolor!"
   }
 ];
 
@@ -93,6 +93,21 @@ function getLogoOrigem(origem) {
   if (origem === "x") return LOGO_X;
   if (origem === "threads") return LOGO_THREADS;
   return LOGO_X;
+}
+
+// Helper de imagem com fallback
+function ImgWithFallback({ src, alt, className, fallback = "/placeholder.png", ...props }) {
+  const [imgSrc, setImgSrc] = useState(src);
+  return (
+    <img
+      src={imgSrc}
+      alt={alt}
+      className={className}
+      loading="lazy"
+      onError={() => setImgSrc(fallback)}
+      {...props}
+    />
+  );
 }
 
 function App() {
@@ -112,12 +127,12 @@ function App() {
 
   return (
     <div className="main-container">
-      {/* CAPA IGUAL MEUTIMAO */}
+      {/* CAPA */}
       <header className="header">
         <div className="cover-highlight">
-          <img
+          <ImgWithFallback
             src={noticias[0]?.imageUrl}
-            alt="Capa principal"
+            alt="Notícia em destaque: capa do São Paulo"
             className="cover-image"
           />
           <div className="cover-info">
@@ -131,11 +146,15 @@ function App() {
       <div className="content-layout">
         {/* COLUNA PRINCIPAL */}
         <main className="center-content">
-          {/* NOTÍCIAS GRANDES IGUAL MEUTIMAO */}
+          {/* NOTÍCIAS GRANDES */}
           <div className="big-news-list">
             {noticias.slice(1).map((noticia, idx) => (
               <div className="big-news-card" key={idx}>
-                <img src={noticia.imageUrl} alt={noticia.title} className="big-news-img" />
+                <ImgWithFallback
+                  src={noticia.imageUrl}
+                  alt={noticia.title}
+                  className="big-news-img"
+                />
                 <div className="big-news-text">
                   <h2 className="big-news-title">{noticia.title}</h2>
                   <p className="big-news-subtitle">{noticia.subtitle}</p>
@@ -150,7 +169,7 @@ function App() {
             <div className="forum-list">
               {forumTopicos.map(topico => (
                 <div className="forum-topic" key={topico.id}>
-                  <img
+                  <ImgWithFallback
                     src={getLogoOrigem(topico.origem)}
                     alt={topico.origem}
                     className="forum-logo"
@@ -177,16 +196,24 @@ function App() {
 
         {/* SIDEBAR */}
         <aside className="sidebar">
-          {/* PROXIMOS JOGOS */}
+          {/* PRÓXIMOS JOGOS */}
           <section className="next-matches">
             <h2>Próximos Jogos</h2>
             <ul>
               {proximosJogos.map((jogo, idx) => (
                 <li className="match-row" key={idx}>
-                  <img src={escudos[jogo.casa]} alt={jogo.casa} className="escudo-time" />
+                  <ImgWithFallback
+                    src={escudos[jogo.casa]}
+                    alt={`Escudo do ${jogo.casa}`}
+                    className="escudo-time"
+                  />
                   <b>{jogo.casa}</b>
                   <span className="vs">x</span>
-                  <img src={escudos[jogo.fora]} alt={jogo.fora} className="escudo-time" />
+                  <ImgWithFallback
+                    src={escudos[jogo.fora]}
+                    alt={`Escudo do ${jogo.fora}`}
+                    className="escudo-time"
+                  />
                   <b>{jogo.fora}</b>
                   <div className="match-info">
                     {jogo.data} - {jogo.hora} - {jogo.campeonato}
@@ -210,7 +237,11 @@ function App() {
               <tbody>
                 <tr>
                   <td>
-                    <img src={escudos["São Paulo"]} alt="São Paulo" className="escudo-mini" />
+                    <ImgWithFallback
+                      src={escudos["São Paulo"]}
+                      alt="Escudo do São Paulo"
+                      className="escudo-mini"
+                    />
                     São Paulo
                   </td>
                   <td>25</td>
@@ -246,7 +277,7 @@ function App() {
                   width="250"
                   height="140"
                   src="https://www.youtube.com/embed/VIDEO_ID"
-                  title="Vídeo do São Paulo"
+                  title="Melhores Momentos - São Paulo x Palmeiras"
                   frameBorder="0"
                   allow="autoplay; encrypted-media"
                   allowFullScreen
