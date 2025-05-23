@@ -3,5 +3,15 @@
     "title": "Nova notícia dinâmica",
     "subtitle": "Testando notícias do JSON.",
     "imageUrl": "https://exemplo.com/imagem.jpg"
+  },
+  {
+    "title": "Outra notícia legal",
+    "subtitle": "Agora sim aparecem várias!",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
+  },
+  {
+    "title": "Mais uma notícia",
+    "subtitle": "Tudo funcionando automático.",
+    "imageUrl": "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80"
   }
 ]
