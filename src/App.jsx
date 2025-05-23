@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 
+// Dados de exemplo (você pode aumentar ou mudar depois)
 const noticiasAutomatizadas = [
   {
     title: "São Paulo vence clássico e se aproxima do topo",
@@ -58,7 +59,6 @@ const proximosJogos = [
 const LOGO_X = "https://upload.wikimedia.org/wikipedia/commons/6/6f/X_icon.svg";
 const LOGO_THREADS = "https://seeklogo.com/images/T/threads-logo-9F0C799529-seeklogo.com.png";
 
-// Fórum simulando origem X ou Threads
 const forumTopicos = [
   {
     id: 1,
@@ -98,70 +98,60 @@ function getLogoOrigem(origem) {
 function App() {
   return (
     <div className="main-container">
+      {/* CAPA IGUAL MEUTIMAO */}
       <header className="header">
-        <h1>SPFC News</h1>
-        <div className="main-news-cover">
+        <div className="cover-highlight">
           <img
             src={noticiasAutomatizadas[0].imageUrl}
             alt="Capa principal"
-            className="main-news-image"
+            className="cover-image"
           />
-          <div className="main-news-content">
-            <span className="news-label">Notícia em destaque</span>
-            <h2 className="main-news-title">{noticiasAutomatizadas[0].title}</h2>
-            <p className="main-news-subtitle">{noticiasAutomatizadas[0].subtitle}</p>
+          <div className="cover-info">
+            <span className="cover-label">Notícia em destaque</span>
+            <h1 className="cover-title">{noticiasAutomatizadas[0].title}</h1>
+            <p className="cover-subtitle">{noticiasAutomatizadas[0].subtitle}</p>
           </div>
         </div>
       </header>
 
       <div className="content-layout">
-        <main className="news-cards-section">
-          <h3>Últimas Notícias</h3>
-          <div className="news-cards-list">
+        {/* COLUNA PRINCIPAL */}
+        <main className="center-content">
+          {/* NOTÍCIAS GRANDES IGUAL MEUTIMAO */}
+          <div className="big-news-list">
             {noticiasAutomatizadas.slice(1).map((noticia, idx) => (
-              <div className="news-card" key={idx}>
-                <img src={noticia.imageUrl} alt={noticia.title} />
-                <div className="news-card-content">
-                  <h4>{noticia.title}</h4>
-                  <p>{noticia.subtitle}</p>
+              <div className="big-news-card" key={idx}>
+                <img src={noticia.imageUrl} alt={noticia.title} className="big-news-img" />
+                <div className="big-news-text">
+                  <h2 className="big-news-title">{noticia.title}</h2>
+                  <p className="big-news-subtitle">{noticia.subtitle}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Fórum central sem links nos títulos */}
+          {/* FÓRUM CENTRAL */}
           <section className="forum-central">
-            <h3 style={{ margin: "32px 0 16px" }}>Discussão / Fórum</h3>
+            <h2>Discussão / Fórum</h2>
             <div className="forum-list">
               {forumTopicos.map(topico => (
-                <div className="forum-topic" key={topico.id} style={{
-                  display: "flex", alignItems: "flex-start", padding: "16px",
-                  border: "1px solid #eee", borderRadius: "8px", marginBottom: "18px", background: "#fafafa"
-                }}>
+                <div className="forum-topic" key={topico.id}>
                   <img
                     src={getLogoOrigem(topico.origem)}
                     alt={topico.origem}
-                    style={{
-                      width: 44, height: 44,
-                      borderRadius: "50%", marginRight: 18, border: "2px solid #dc143c", background: "#fff", objectFit: "cover"
-                    }}
+                    className="forum-logo"
                   />
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", marginBottom: 4, flexWrap: "wrap" }}>
-                      <span style={{
-                        fontWeight: "bold", color: "#dc143c", fontSize: "1.12rem", marginRight: 8,
-                        textDecoration: "none"
-                      }}>
-                        {topico.titulo}
-                      </span>
-                      <span style={{ color: "#666", fontSize: "0.9rem", marginRight: 10 }}>
+                  <div className="forum-topic-main">
+                    <div className="forum-topic-header">
+                      <span className="forum-topic-title">{topico.titulo}</span>
+                      <span className="forum-topic-meta">
                         por <b>{topico.autor}</b> • {topico.data}
                       </span>
-                      <span style={{ color: "#888", fontSize: "0.95rem", marginLeft: "auto" }}>
+                      <span className="forum-topic-respostas">
                         <b>{topico.respostas}</b> respostas
                       </span>
                     </div>
-                    <div style={{ marginBottom: 6, color: "#444" }}>
+                    <div className="forum-topic-body">
                       {topico.trecho}
                     </div>
                   </div>
@@ -171,30 +161,31 @@ function App() {
           </section>
         </main>
 
+        {/* SIDEBAR */}
         <aside className="sidebar">
+          {/* PROXIMOS JOGOS */}
           <section className="next-matches">
-            <h3>Próximos Jogos</h3>
+            <h2>Próximos Jogos</h2>
             <ul>
               {proximosJogos.map((jogo, idx) => (
-                <li key={idx} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
-                  <img src={escudos[jogo.casa]} alt={jogo.casa} style={{ width: 32, height: 32, marginRight: 6 }} />
+                <li className="match-row" key={idx}>
+                  <img src={escudos[jogo.casa]} alt={jogo.casa} className="escudo-time" />
                   <b>{jogo.casa}</b>
-                  <span style={{ margin: "0 6px" }}>x</span>
-                  <img src={escudos[jogo.fora]} alt={jogo.fora} style={{ width: 32, height: 32, marginRight: 6 }} />
+                  <span className="vs">x</span>
+                  <img src={escudos[jogo.fora]} alt={jogo.fora} className="escudo-time" />
                   <b>{jogo.fora}</b>
-                  <div style={{ marginLeft: 10, fontSize: "0.9rem" }}>
-                    <div>
-                      {jogo.data} - {jogo.hora} - {jogo.campeonato}
-                    </div>
+                  <div className="match-info">
+                    {jogo.data} - {jogo.hora} - {jogo.campeonato}
                   </div>
                 </li>
               ))}
             </ul>
           </section>
 
+          {/* CLASSIFICAÇÃO */}
           <section className="standings">
-            <h3>Classificação</h3>
-            <table>
+            <h2>Classificação</h2>
+            <table className="standings-table">
               <thead>
                 <tr>
                   <th>Clube</th>
@@ -205,7 +196,7 @@ function App() {
               <tbody>
                 <tr>
                   <td>
-                    <img src={escudos["São Paulo"]} alt="São Paulo" style={{ width: 22, verticalAlign: "middle", marginRight: 5 }} />
+                    <img src={escudos["São Paulo"]} alt="São Paulo" className="escudo-mini" />
                     São Paulo
                   </td>
                   <td>25</td>
@@ -215,8 +206,9 @@ function App() {
             </table>
           </section>
 
+          {/* EVENTOS */}
           <section className="events">
-            <h3>Eventos</h3>
+            <h2>Eventos</h2>
             <ul>
               <li>
                 <a href="https://example.com/evento1" target="_blank" rel="noopener noreferrer">
@@ -231,8 +223,9 @@ function App() {
             </ul>
           </section>
 
+          {/* VÍDEOS */}
           <section className="videos-section">
-            <h3>Vídeos em Destaque</h3>
+            <h2>Vídeos em Destaque</h2>
             <div className="videos-list">
               <div className="video-card">
                 <iframe
@@ -244,7 +237,7 @@ function App() {
                   allow="autoplay; encrypted-media"
                   allowFullScreen
                 ></iframe>
-                <p style={{ fontSize: "0.95rem" }}>Melhores Momentos - São Paulo x Palmeiras</p>
+                <p className="video-title">Melhores Momentos - São Paulo x Palmeiras</p>
               </div>
             </div>
           </section>
