@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 
-// Exemplo de notícias automatizadas vindas da IA/API
 const noticiasAutomatizadas = [
   {
     title: "São Paulo vence clássico e se aproxima do topo",
@@ -25,7 +24,6 @@ const noticiasAutomatizadas = [
   }
 ];
 
-// URLs dos escudos (você pode trocar por outros de sua preferência)
 const escudos = {
   "São Paulo": "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg",
   "Palmeiras": "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg",
@@ -57,14 +55,56 @@ const proximosJogos = [
   }
 ];
 
+// Logos de origem
+const LOGO_X = "https://upload.wikimedia.org/wikipedia/commons/6/6f/X_icon.svg";
+const LOGO_THREADS = "https://seeklogo.com/images/T/threads-logo-9F0C799529-seeklogo.com.png";
+
+// Dados simulados para o Fórum
+const forumTopicos = [
+  {
+    id: 1,
+    origem: "x",
+    autor: "JoãoTorcedor",
+    data: "23/05/2025 00:45",
+    titulo: "O que acharam da escalação para o clássico?",
+    respostas: 12,
+    trecho: "Gostei do esquema com três zagueiros, mas acho que faltou ofensividade no segundo tempo...",
+    link: "#"
+  },
+  {
+    id: 2,
+    origem: "x",
+    autor: "AnaSPFC",
+    data: "22/05/2025 21:15",
+    titulo: "Calleri ou Luciano: quem foi mais decisivo hoje?",
+    respostas: 8,
+    trecho: "Ambos jogaram muito, mas na minha opinião o Calleri foi fundamental com aquele gol de cabeça...",
+    link: "#"
+  },
+  {
+    id: 3,
+    origem: "threads",
+    autor: "TricolorFiel",
+    data: "22/05/2025 18:00",
+    titulo: "Alguém vai no churrasco da Independente?",
+    respostas: 4,
+    trecho: "Galera, quem vai colar no churrasco esse fim de semana? Bora marcar de ir juntos!",
+    link: "#"
+  }
+];
+
+function getLogoOrigem(origem) {
+  if (origem === "x") return LOGO_X;
+  if (origem === "threads") return LOGO_THREADS;
+  return LOGO_X;
+}
+
 function App() {
   return (
     <div className="main-container">
-      {/* Topo e capa gigante */}
       <header className="header">
         <h1>SPFC News</h1>
         <div className="main-news-cover">
-          {/* Notícia principal automatizada */}
           <img
             src={noticiasAutomatizadas[0].imageUrl}
             alt="Capa principal"
@@ -79,11 +119,9 @@ function App() {
       </header>
 
       <div className="content-layout">
-        {/* Coluna esquerda: Notícias em cards */}
         <main className="news-cards-section">
           <h3>Últimas Notícias</h3>
           <div className="news-cards-list">
-            {/* Cards automáticos de notícias, exceto a principal */}
             {noticiasAutomatizadas.slice(1).map((noticia, idx) => (
               <div className="news-card" key={idx}>
                 <img src={noticia.imageUrl} alt={noticia.title} />
@@ -94,11 +132,50 @@ function App() {
               </div>
             ))}
           </div>
+
+          {/* Fórum central estilo MeuTimão, sem tag de tipo e sem botão novo tópico */}
+          <section className="forum-central">
+            <h3 style={{ margin: "32px 0 16px" }}>Discussão / Fórum</h3>
+            <div className="forum-list">
+              {forumTopicos.map(topico => (
+                <div className="forum-topic" key={topico.id} style={{
+                  display: "flex", alignItems: "flex-start", padding: "16px",
+                  border: "1px solid #eee", borderRadius: "8px", marginBottom: "18px", background: "#fafafa"
+                }}>
+                  <img
+                    src={getLogoOrigem(topico.origem)}
+                    alt={topico.origem}
+                    style={{
+                      width: 44, height: 44,
+                      borderRadius: "50%", marginRight: 18, border: "2px solid #dc143c", background: "#fff", objectFit: "cover"
+                    }}
+                  />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", alignItems: "center", marginBottom: 4, flexWrap: "wrap" }}>
+                      <a href={topico.link} style={{
+                        fontWeight: "bold", color: "#dc143c", fontSize: "1.12rem", marginRight: 8,
+                        textDecoration: "none"
+                      }}>
+                        {topico.titulo}
+                      </a>
+                      <span style={{ color: "#666", fontSize: "0.9rem", marginRight: 10 }}>
+                        por <b>{topico.autor}</b> • {topico.data}
+                      </span>
+                      <span style={{ color: "#888", fontSize: "0.95rem", marginLeft: "auto" }}>
+                        <b>{topico.respostas}</b> respostas
+                      </span>
+                    </div>
+                    <div style={{ marginBottom: 6, color: "#444" }}>
+                      {topico.trecho}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
         </main>
 
-        {/* Coluna direita: Jogos, Classificação, Eventos, Fórum */}
         <aside className="sidebar">
-          {/* Próximos jogos */}
           <section className="next-matches">
             <h3>Próximos Jogos</h3>
             <ul>
@@ -119,7 +196,6 @@ function App() {
             </ul>
           </section>
 
-          {/* Classificação */}
           <section className="standings">
             <h3>Classificação</h3>
             <table>
@@ -139,12 +215,10 @@ function App() {
                   <td>25</td>
                   <td>3º</td>
                 </tr>
-                {/* Outras linhas podem ser geradas */}
               </tbody>
             </table>
           </section>
 
-          {/* Eventos */}
           <section className="events">
             <h3>Eventos</h3>
             <ul>
@@ -161,45 +235,27 @@ function App() {
             </ul>
           </section>
 
-          {/* Fórum social */}
-          <section className="forum">
-            <h3>Discussão / Fórum</h3>
-            <ul>
-              <li>
-                <span className="forum-author">@spfctorcedor</span> (X): 
-                "O que acharam da escalação para o clássico?"
-              </li>
-              <li>
-                <span className="forum-author">@tricolorfem</span> (Threads): 
-                "Grande vitória das meninas do São Paulo!"
-              </li>
-              {/* Outros tópicos automáticos */}
-            </ul>
+          <section className="videos-section">
+            <h3>Vídeos em Destaque</h3>
+            <div className="videos-list">
+              <div className="video-card">
+                <iframe
+                  width="250"
+                  height="140"
+                  src="https://www.youtube.com/embed/VIDEO_ID"
+                  title="Vídeo do São Paulo"
+                  frameBorder="0"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                ></iframe>
+                <p style={{ fontSize: "0.95rem" }}>Melhores Momentos - São Paulo x Palmeiras</p>
+              </div>
+              {/* Adicione mais vídeos como desejar */}
+            </div>
           </section>
         </aside>
       </div>
 
-      {/* Seção de vídeos */}
-      <section className="videos-section">
-        <h3>Vídeos em Destaque</h3>
-        <div className="videos-list">
-          <div className="video-card">
-            <iframe
-              width="320"
-              height="180"
-              src="https://www.youtube.com/embed/VIDEO_ID"
-              title="Vídeo do São Paulo"
-              frameBorder="0"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-            ></iframe>
-            <p>Melhores Momentos - São Paulo x Palmeiras</p>
-          </div>
-          {/* Outros vídeos automáticos */}
-        </div>
-      </section>
-
-      {/* Rodapé */}
       <footer>
         <div>SPFC News - 100% automatizado por IA • 2025</div>
       </footer>
