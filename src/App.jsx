@@ -1,171 +1,146 @@
-import React, { useEffect, useState } from "react";
-
-// URLs de imagens diretas da internet
-const logoSPFC = "https://upload.wikimedia.org/wikipedia/commons/2/2d/S%C3%A3o_Paulo_FC_crest.svg";
-const palmeiras = "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg";
-const santos = "https://upload.wikimedia.org/wikipedia/commons/3/35/Santos_logo.svg";
-const noticia1 = "https://upload.wikimedia.org/wikipedia/commons/2/2d/S%C3%A3o_Paulo_FC_crest.svg";
-const noticia2 = "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg";
-const noticia3 = "https://upload.wikimedia.org/wikipedia/commons/3/35/Santos_logo.svg";
-const jogador1 = "https://randomuser.me/api/portraits/men/32.jpg";
-const jogador2 = "https://randomuser.me/api/portraits/men/65.jpg";
-
-// Função para chamar HuggingFace API
-async function pedirIA(prompt) {
-  const response = await fetch("https://api-inference.huggingface.co/models/facebook/opt-1.3b", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer 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"
-    },
-    body: JSON.stringify({inputs: prompt})
-  });
-  const dataRaw = await response.text();
-  try {
-    const data = JSON.parse(dataRaw);
-    if (data.error) {
-      return "Erro da IA: " + data.error;
-    }
-    return data[0]?.generated_text || "Não foi possível gerar conteúdo.";
-  } catch (e) {
-    return "Erro ao obter informação da IA: " + dataRaw;
-  }
-}
-
-// Hook customizado para atualizar textos via IA a cada X milissegundos
-function useIAFeed(prompt, intervalo_ms = 180000) {
-  const [texto, setTexto] = useState("Carregando...");
-  useEffect(() => {
-    let ativo = true;
-    async function atualizar() {
-      setTexto("Carregando...");
-      try {
-        const textoIA = await pedirIA(prompt);
-        if (ativo) setTexto(textoIA.replace(prompt, "").trim());
-      } catch (e) {
-        if (ativo) setTexto("Erro ao obter informação da IA: " + e.message);
-      }
-    }
-    atualizar();
-    const timer = setInterval(atualizar, intervalo_ms);
-    return () => {
-      ativo = false;
-      clearInterval(timer);
-    };
-  }, [prompt, intervalo_ms]);
-  return texto;
-}
+import React from "react";
+import "./App.css";
 
 function App() {
-  // Prompts para cada seção
-  const promptNoticias = "Escreva um resumo de 3 notícias recentes sobre o futebol do São Paulo FC, formato: 1. Título e resumo curto. 2. Título e resumo curto. 3. Título e resumo curto. Responda em português.";
-  const promptDestaques = "Liste 3 destaques do dia sobre o São Paulo FC, cada um com título, categoria e breve explicação. Responda em português.";
-  const promptJogos = "Quais são os próximos 2 jogos do São Paulo FC? Escreva a data, adversário, local e horário para cada um. Responda em português.";
-  const promptElenco = "Destaque 2 jogadores do São Paulo FC hoje, escreva nome, posição e uma curiosidade sobre cada um. Responda em português.";
-
-  // Alimentação automática via IA
-  const noticiasIA = useIAFeed(promptNoticias);
-  const destaquesIA = useIAFeed(promptDestaques);
-  const jogosIA = useIAFeed(promptJogos);
-  const elencoIA = useIAFeed(promptElenco);
-
   return (
-    <div className="site-bg">
-      {/* Header */}
-      <header className="site-header">
-        <div className="site-header-area">
-          <img src={logoSPFC} alt="SPFC" className="site-logo" />
-          <span className="site-title">Tricolor Paulista</span>
-          <nav className="site-menu">
-            <a href="#">Início</a>
-            <a href="#">Notícias</a>
-            <a href="#">Jogos</a>
-            <a href="#">Elenco</a>
-            <a href="#">Torcida</a>
-            <a href="#">Comunidade</a>
-            <a href="#">Sobre</a>
-          </nav>
+    <div className="main-container">
+      {/* Topo e capa gigante */}
+      <header className="header">
+        <h1>SPFC News</h1>
+        <div className="main-news-cover">
+          {/* Notícia principal automatizada */}
+          <img
+            src="/placeholder-capa.jpg"
+            alt="Capa principal"
+            className="main-news-image"
+          />
+          <div className="main-news-content">
+            <span className="news-label">Notícia em destaque</span>
+            <h2 className="main-news-title">Título principal automatizado</h2>
+            <p className="main-news-subtitle">Subtítulo gerado pela IA</p>
+          </div>
         </div>
       </header>
 
-      {/* Main Layout */}
-      <main className="site-main">
-        {/* COLUNA PRINCIPAL */}
-        <section className="main-content">
-          <div className="portal-banner">
-            O maior portal do São Paulo FC na web!
-          </div>
-
-          <div className="noticias-bloco">
-            <h2>Últimas Notícias</h2>
-            <div className="news-list">
-              {noticiasIA.split(/\d+\.\s/).filter(Boolean).map((noti, idx) => (
-                <div className="news-card" key={idx}>
-                  <img src={[noticia1, noticia2, noticia3][idx % 3]} alt="Notícia" />
-                  <div>
-                    <div className="news-title">{noti.split(":")[0]}</div>
-                    <div className="news-meta">{noti.split(":").slice(1).join(":")}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <h2 className="destaques-title">Destaques</h2>
-          <div className="destaques-mosaico">
-            {destaquesIA.split(/\d+\.\s/).filter(Boolean).map((desc, idx) => (
-              <article className="destaque-card" key={idx}>
-                <figure className="destaque-img">
-                  <img src={[noticia1, noticia2, noticia3][idx % 3]} alt="Destaque" />
-                </figure>
-                <div className="destaque-meta">
-                  <span className="destaque-categoria">{desc.split(":")[0]}</span>
-                </div>
-                <h2 className="destaque-titulo">{desc.split(":")[1] || desc}</h2>
-                <div className="destaque-interacoes">
-                  <span className="destaque-comp">IA Atualizado</span>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* SIDEBAR */}
-        <aside className="sidebar">
-          <div className="card">
-            <h2>Próximos Jogos</h2>
-            <div className="match-list">
-              {jogosIA.split(/\d+\.\s/).filter(Boolean).map((jogo, idx) => (
-                <div className="match-item" key={idx}>
-                  <img src={logoSPFC} alt="SPFC" className="escudo" />
-                  <span className="vs">vs</span>
-                  <img src={idx === 0 ? palmeiras : santos} alt={idx === 0 ? "Palmeiras" : "Santos"} className="escudo" />
-                  <div className="match-details">{jogo}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="card">
-            <h2>Elenco em Destaque</h2>
-            {elencoIA.split(/\d+\.\s/).filter(Boolean).map((jog, idx) => (
-              <div className="player-card" key={idx}>
-                <img src={[jogador1, jogador2][idx % 2]} alt="Jogador" className="player-thumb" />
-                <div>
-                  <div className="player-nome">{jog.split(":")[0]}</div>
-                  <div className="player-pos">{jog.split(":").slice(1).join(":")}</div>
+      <div className="content-layout">
+        {/* Coluna esquerda: Notícias em cards */}
+        <main className="news-cards-section">
+          <h3>Últimas Notícias</h3>
+          <div className="news-cards-list">
+            {/* Cards automáticos de notícias */}
+            {[1,2,3,4].map((n) => (
+              <div className="news-card" key={n}>
+                <img src={`/placeholder-${n}.jpg`} alt="Notícia" />
+                <div className="news-card-content">
+                  <h4>Título automatizado {n}</h4>
+                  <p>Subtítulo gerado pela IA {n}</p>
                 </div>
               </div>
             ))}
           </div>
-        </aside>
-      </main>
+        </main>
 
-      {/* Footer */}
-      <footer className="site-footer">
-        <img src={logoSPFC} alt="Escudo SPFC" className="footer-logo" />
-        Tricolor Paulista © 2025 — Não oficial, dedicado à torcida do São Paulo FC.
-        <br />
-        <span style={{ color: "#da291c" }}>#VamosSãoPaulo</span>
+        {/* Coluna direita: Jogos, Classificação, Eventos, Fórum */}
+        <aside className="sidebar">
+          {/* Próximos jogos */}
+          <section className="next-matches">
+            <h3>Próximos Jogos</h3>
+            <ul>
+              <li>
+                <b>São Paulo x Palmeiras</b> <br />
+                25/05/2025 - 18:30 - Brasileirão
+              </li>
+              <li>
+                <b>São Paulo x Grêmio</b> <br />
+                29/05/2025 - 21:00 - Copa do Brasil
+              </li>
+              <li>
+                <b>Atlético-MG x São Paulo</b> <br />
+                02/06/2025 - 16:00 - Brasileirão
+              </li>
+            </ul>
+          </section>
+
+          {/* Classificação */}
+          <section className="standings">
+            <h3>Classificação</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Clube</th>
+                  <th>Pts</th>
+                  <th>Pos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>São Paulo</td>
+                  <td>25</td>
+                  <td>3º</td>
+                </tr>
+                {/* Outras linhas podem ser geradas */}
+              </tbody>
+            </table>
+          </section>
+
+          {/* Eventos */}
+          <section className="events">
+            <h3>Eventos</h3>
+            <ul>
+              <li>
+                <a href="https://example.com/evento1" target="_blank" rel="noopener noreferrer">
+                  Churrasco da Torcida Independente - 30/05/2025
+                </a>
+              </li>
+              <li>
+                <a href="https://example.com/evento2" target="_blank" rel="noopener noreferrer">
+                  Caravana SPFC para Belo Horizonte - 02/06/2025
+                </a>
+              </li>
+            </ul>
+          </section>
+
+          {/* Fórum social */}
+          <section className="forum">
+            <h3>Discussão / Fórum</h3>
+            <ul>
+              <li>
+                <span className="forum-author">@spfctorcedor</span> (X): 
+                "O que acharam da escalação para o clássico?"
+              </li>
+              <li>
+                <span className="forum-author">@tricolorfem</span> (Threads): 
+                "Grande vitória das meninas do São Paulo!"
+              </li>
+              {/* Outros tópicos automáticos */}
+            </ul>
+          </section>
+        </aside>
+      </div>
+
+      {/* Seção de vídeos */}
+      <section className="videos-section">
+        <h3>Vídeos em Destaque</h3>
+        <div className="videos-list">
+          <div className="video-card">
+            <iframe
+              width="320"
+              height="180"
+              src="https://www.youtube.com/embed/VIDEO_ID"
+              title="Vídeo do São Paulo"
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+            ></iframe>
+            <p>Melhores Momentos - São Paulo x Palmeiras</p>
+          </div>
+          {/* Outros vídeos automáticos */}
+        </div>
+      </section>
+
+      {/* Rodapé */}
+      <footer>
+        <div>SPFC News - 100% automatizado por IA • 2025</div>
       </footer>
     </div>
   );
