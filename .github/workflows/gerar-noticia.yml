@@ -19,7 +19,7 @@ jobs:
         env:
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
-        run: node src/gerador_noticias.js
+        run: node gerador_noticias.js
 
       - name: Commit e push das mudanças
         run: |
