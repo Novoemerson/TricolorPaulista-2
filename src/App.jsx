@@ -1,21 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./App.css";
 
-// Anteriormente: const noticiasAutomatizadas = [...] // REMOVIDO
-
-// Hook para buscar notícias de um arquivo JSON local
-const useNoticias = () => {
-  const [noticias, setNoticias] = useState([]);
-
-  useEffect(() => {
-    fetch("/noticias.json")
-      .then(response => response.json())
-      .then(data => setNoticias(data))
-      .catch(error => console.error("Erro ao carregar notícias:", error));
-  }, []);
-
-  return noticias;
-};
+// Dados de exemplo (você pode aumentar ou mudar depois)
+const noticiasAutomatizadas = [
+  {
+    title: "São Paulo vence clássico e se aproxima do topo",
+    subtitle: "Com gols de Calleri e Luciano, Tricolor conquista vitória importante.",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
+  },
+  {
+    title: "Feminino do SPFC conquista vaga inédita",
+    subtitle: "Equipe feminina faz história e avança para a final do estadual.",
+    imageUrl: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    title: "Base do São Paulo brilha na Copinha",
+    subtitle: "Garotos do Tricolor fazem excelente campanha e avançam às semifinais.",
+    imageUrl: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    title: "São Paulo anuncia novo patrocínio",
+    subtitle: "Clube fecha contrato milionário para o restante da temporada.",
+    imageUrl: "https://images.unsplash.com/photo-1505843276871-5b0606c61e39?auto=format&fit=crop&w=600&q=80"
+  }
+];
 
 const escudos = {
   "São Paulo": "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg",
@@ -88,28 +96,21 @@ function getLogoOrigem(origem) {
 }
 
 function App() {
-  // Trazendo as notícias do JSON
-  const noticias = useNoticias();
-
   return (
     <div className="main-container">
       {/* CAPA IGUAL MEUTIMAO */}
       <header className="header">
         <div className="cover-highlight">
-          {noticias[0] && (
-            <>
-              <img
-                src={noticias[0].imageUrl}
-                alt="Capa principal"
-                className="cover-image"
-              />
-              <div className="cover-info">
-                <span className="cover-label">Notícia em destaque</span>
-                <h1 className="cover-title">{noticias[0].title}</h1>
-                <p className="cover-subtitle">{noticias[0].subtitle}</p>
-              </div>
-            </>
-          )}
+          <img
+            src={noticiasAutomatizadas[0].imageUrl}
+            alt="Capa principal"
+            className="cover-image"
+          />
+          <div className="cover-info">
+            <span className="cover-label">Notícia em destaque</span>
+            <h1 className="cover-title">{noticiasAutomatizadas[0].title}</h1>
+            <p className="cover-subtitle">{noticiasAutomatizadas[0].subtitle}</p>
+          </div>
         </div>
       </header>
 
@@ -118,7 +119,7 @@ function App() {
         <main className="center-content">
           {/* NOTÍCIAS GRANDES IGUAL MEUTIMAO */}
           <div className="big-news-list">
-            {noticias.slice(1).map((noticia, idx) => (
+            {noticiasAutomatizadas.slice(1).map((noticia, idx) => (
               <div className="big-news-card" key={idx}>
                 <img src={noticia.imageUrl} alt={noticia.title} className="big-news-img" />
                 <div className="big-news-text">
