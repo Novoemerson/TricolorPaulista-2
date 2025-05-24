@@ -5,11 +5,11 @@ async function gerarNoticia() {
     try {
         console.log("🚀 Iniciando geração de notícia...");
 
-        // 1️⃣ Gerar notícia com IA Cohere
+        // 🔹 Gera uma notícia nova com a IA Cohere
         const cohereResponse = await fetch("https://api.cohere.ai/generate", {
             method: "POST",
             headers: { "Content-Type": "application/json", "Authorization": "Bearer SEU_COHERE_KEY" },
-            body: JSON.stringify({ prompt: "Crie uma manchete sobre futebol e um breve resumo atualizado." })
+            body: JSON.stringify({ prompt: "Crie uma manchete exclusiva sobre futebol com um breve resumo atualizado." })
         });
         const cohereData = await cohereResponse.json();
         
@@ -18,14 +18,14 @@ async function gerarNoticia() {
         }
 
         const noticia = {
-            title: cohereData.generations[0].text.split(".")[0],
+            title: cohereData.generations[0].text.split(".")[0] + ` (${new Date().toISOString()})`, // 🔹 Adiciona um identificador único
             subtitle: cohereData.generations[0].text,
             imageUrl: "/images/placeholder.jpg"
         };
 
         console.log("✅ Nova notícia gerada:", noticia);
 
-        // 2️⃣ Ler o JSON atual e adicionar novas notícias ao invés de sobrescrever!
+        // 🔹 Lê o JSON atual e adiciona novas notícias ao invés de sobrescrever
         const filePath = "public/noticias.json";
         let noticiasAtuais = [];
 
@@ -36,7 +36,7 @@ async function gerarNoticia() {
             }
         }
 
-        noticiasAtuais.unshift(noticia); // Adiciona nova notícia no topo
+        noticiasAtuais.unshift(noticia); // Adiciona no topo
         fs.writeFileSync(filePath, JSON.stringify(noticiasAtuais, null, 2));
 
         console.log("✅ `noticias.json` atualizado corretamente!");
