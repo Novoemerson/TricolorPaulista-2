@@ -1,30 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 
-// Dados de exemplo (você pode aumentar ou mudar depois)
-const noticiasAutomatizadas = [
-  {
-    title: "São Paulo vence clássico e se aproxima do topo",
-    subtitle: "Com gols de Calleri e Luciano, Tricolor conquista vitória importante.",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
-  },
-  {
-    title: "Feminino do SPFC conquista vaga inédita",
-    subtitle: "Equipe feminina faz história e avança para a final do estadual.",
-    imageUrl: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    title: "Base do São Paulo brilha na Copinha",
-    subtitle: "Garotos do Tricolor fazem excelente campanha e avançam às semifinais.",
-    imageUrl: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    title: "São Paulo anuncia novo patrocínio",
-    subtitle: "Clube fecha contrato milionário para o restante da temporada.",
-    imageUrl: "https://images.unsplash.com/photo-1505843276871-5b0606c61e39?auto=format&fit=crop&w=600&q=80"
-  }
-];
-
+// ESCUDOS, JOGOS, FÓRUM E OUTROS DADOS FIXOS (NÃO MUDA)
 const escudos = {
   "São Paulo": "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg",
   "Palmeiras": "https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg",
@@ -95,22 +72,81 @@ function getLogoOrigem(origem) {
   return LOGO_X;
 }
 
+// FUNÇÃO QUE BUSCA AS NOTÍCIAS DA API-FUTEBOL
+function useNoticiasFutebol() {
+  const [noticias, setNoticias] = useState([]);
+
+  useEffect(() => {
+    fetch("https://api.api-futebol.com.br/v1/noticias", {
+      headers: {
+        Authorization: "Bearer live_3571c7b6cc6a10650e12ba26db6626"
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        // ADAPTE ESTE TRECHO CASO SUA API RETORNE CAMPOS DIFERENTES
+        if (Array.isArray(data)) {
+          const noticiasTratadas = data.map(item => ({
+            title: item.titulo || item.title || "Sem título",
+            subtitle: item.resumo || item.subtitle || "",
+            imageUrl: item.imagem || item.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
+          }));
+          setNoticias(noticiasTratadas);
+        }
+      })
+      .catch(() => {
+        // Fallback: usa notícias de exemplo se a API não funcionar
+        setNoticias([
+          {
+            title: "São Paulo vence clássico e se aproxima do topo",
+            subtitle: "Com gols de Calleri e Luciano, Tricolor conquista vitória importante.",
+            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/São_Paulo_FC_Logo.svg"
+          },
+          {
+            title: "Feminino do SPFC conquista vaga inédita",
+            subtitle: "Equipe feminina faz história e avança para a final do estadual.",
+            imageUrl: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80"
+          },
+          {
+            title: "Base do São Paulo brilha na Copinha",
+            subtitle: "Garotos do Tricolor fazem excelente campanha e avançam às semifinais.",
+            imageUrl: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80"
+          },
+          {
+            title: "São Paulo anuncia novo patrocínio",
+            subtitle: "Clube fecha contrato milionário para o restante da temporada.",
+            imageUrl: "https://images.unsplash.com/photo-1505843276871-5b0606c61e39?auto=format&fit=crop&w=600&q=80"
+          }
+        ]);
+      });
+  }, []);
+
+  return noticias;
+}
+
 function App() {
+  // BUSCA AS NOTÍCIAS DA API
+  const noticiasAutomatizadas = useNoticiasFutebol();
+
   return (
     <div className="main-container">
       {/* CAPA IGUAL MEUTIMAO */}
       <header className="header">
         <div className="cover-highlight">
-          <img
-            src={noticiasAutomatizadas[0].imageUrl}
-            alt="Capa principal"
-            className="cover-image"
-          />
-          <div className="cover-info">
-            <span className="cover-label">Notícia em destaque</span>
-            <h1 className="cover-title">{noticiasAutomatizadas[0].title}</h1>
-            <p className="cover-subtitle">{noticiasAutomatizadas[0].subtitle}</p>
-          </div>
+          {noticiasAutomatizadas[0] && (
+            <>
+              <img
+                src={noticiasAutomatizadas[0].imageUrl}
+                alt="Capa principal"
+                className="cover-image"
+              />
+              <div className="cover-info">
+                <span className="cover-label">Notícia em destaque</span>
+                <h1 className="cover-title">{noticiasAutomatizadas[0].title}</h1>
+                <p className="cover-subtitle">{noticiasAutomatizadas[0].subtitle}</p>
+              </div>
+            </>
+          )}
         </div>
       </header>
 
