@@ -1,30 +1,8 @@
-name: Atualizar notícias e imagens com IA
-
-on:
-  schedule:
-    - cron: '*/3 * * * *' # a cada 3 minutos
-  workflow_dispatch:
-
-jobs:
-  gerar-e-atualizar:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
-
-      - name: Instalar dependências
-        run: npm install
-
-      - name: Rodar gerador IA
-        env:
-          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
-          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
-        run: node gerador_noticias.js
-
-      - name: Commit e push das mudanças
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/noticias.json public/images/
-          git commit -m "Atualização automática de notícias e imagens via IA"
-          git push
+- name: Commit e push das mudanças
+  run: |
+    git config --global user.name "github-actions[bot]"
+    git config --global user.email "github-actions[bot]@users.noreply.github.com"
+    
+    git add public/noticias.json public/images/
+    git commit -m "Atualização automática de notícias e imagens via IA" || echo "Nenhuma mudança detectada."
+    git push
