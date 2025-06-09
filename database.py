@@ -18,13 +18,3 @@ def criar_banco():
 
 # Executar a função de criação do banco
 criar_banco()
-
-# Inserir notícia
-def inserir_noticia(titulo, subtitulo, texto_original):
-    conn = sqlite3.connect("noticias.db")
-    cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO noticias (titulo, subtitulo, texto_original) VALUES (?, ?, ?)
-    """, (titulo, subtitulo, texto_original))
-    conn.commit()
-    conn.close()
