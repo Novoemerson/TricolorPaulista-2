@@ -17,5 +17,9 @@ def index():
     noticias = buscar_noticias()
     return render_template("index.html", noticias=noticias)
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 if __name__ == "__main__":
     app.run(debug=True)
