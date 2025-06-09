@@ -32,3 +32,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+import os
+if not os.path.exists("noticias.db"):
+    logging.error("⚠️ ERRO: Banco de dados noticias.db não encontrado!")
