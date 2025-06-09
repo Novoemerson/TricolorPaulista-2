@@ -8,10 +8,10 @@
     <h1>Bem-vindo ao Blog Tricolor Paulista!</h1>
     <p>Veja abaixo as notícias geradas automaticamente:</p>
 
-    {% for noticia in noticias %}
-    <h2>{{ noticia[0] }}</h2>
-    <h3>{{ noticia[1] }}</h3>
-    <p>{{ noticia[2] }}</p>
+  {% for noticia in noticias %}
+    <h2>{{ noticia[1] }}</h2>
+    <h3>{{ noticia[2] }}</h3>
+    <p>{{ noticia[3] }}</p>
     <hr>
 {% endfor %}
 </body>
