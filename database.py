@@ -16,6 +16,9 @@ def criar_banco():
     conn.commit()
     conn.close()
 
+# Executar a função de criação do banco
+criar_banco()
+
 # Inserir notícia
 def inserir_noticia(titulo, subtitulo, texto_original):
     conn = sqlite3.connect("noticias.db")
