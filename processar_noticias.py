@@ -28,7 +28,7 @@ noticia_gerada = resposta.generations[0].text
 # Salvar a notícia no banco de dados SQLite
 conn = sqlite3.connect("noticias.db")
 cursor = conn.cursor()
-cursor.execute("INSERT INTO noticias (titulo, subtitulo, texto_gerado) VALUES (?, ?, ?)", 
+cursor.execute("SELECT id, titulo FROM noticias WHERE texto_gerado IS NULL"), 
                ("Nova contratação do São Paulo", "Detalhes sobre reforço", noticia_gerada))
 conn.commit()
 conn.close()
