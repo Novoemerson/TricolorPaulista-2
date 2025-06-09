@@ -23,7 +23,7 @@ def buscar_noticias():
     return noticias
 
 @app.route("/")
-def index(São Paulo encaminha contratação do atacante Juan Dinenno, do Cruzeiro
+def index("São Paulo encaminha contratação do atacante Juan Dinenno, do Cruzeiro
 Argentino 30 anos deve chegar ao Tricolor por empréstimo até o fim do ano
 
 08/06/2025 21h20
@@ -36,7 +36,7 @@ Dinenno se encaixa no perfil procurado pelo São Paulo para brigar por posição
 
 O contrato de Dinenno com o Cruzeiro se encerra justamente em dezembro, até quando irá o empréstimo com o São Paulo. Se cumprir metas previstas neste acordo, o centroavante permanecerá por mais tempo no Tricolor.
 
-Um outro alvo para a posição era Carlos Vinícius. O centroavante de 30 anos está livre no mercado depois de deixar o Fulham, da Inglaterra, mas as negociações com o São Paulo não avançaram.):
+Um outro alvo para a posição era Carlos Vinícius. O centroavante de 30 anos está livre no mercado depois de deixar o Fulham, da Inglaterra, mas as negociações com o São Paulo não avançaram."):
     noticias = buscar_noticias()
     print("📝 Dados das notícias:", noticias)  # Adicionando um print para depuração
     
