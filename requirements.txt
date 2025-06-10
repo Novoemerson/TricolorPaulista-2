@@ -1,4 +1,3 @@
 Flask
 cohere
-sqlite3
 deep-translator
