@@ -1,5 +1,4 @@
-echo "Flask" >> requirements.txt
-echo "cohere" >> requirements.txt
-git add requirements.txt
-git commit -m "Atualizando dependências"
-git push origin main
+Flask
+cohere
+sqlite3
+deep-translator
