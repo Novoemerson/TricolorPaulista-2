@@ -8,7 +8,7 @@ co = cohere.Client(COHERE_API_KEY)
 def gerar_texto():
     resposta = co.generate(
         model="command",
-        prompt=prompt = "Crie uma notícia esportiva sobre o São Paulo Futebol Clube e sua próxima contratação. Escreva em português do Brasil.",
+        prompt = "Crie uma notícia esportiva sobre o São Paulo Futebol Clube e sua próxima contratação. A notícia deve estar totalmente em **português do Brasil**, sem palavras em inglês.",
         max_tokens=300
     )
 
