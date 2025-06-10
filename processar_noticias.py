@@ -22,7 +22,7 @@ noticia_gerada = gerar_texto()
 conn = sqlite3.connect("noticias.db")
 cursor = conn.cursor()
 cursor.execute(
-    "INSERT INTO noticias (titulo, subtitulo, texto_gerado) VALUES (?, ?, ?)", 
+    "INSERT INTO noticias (titulo, subtitulo, texto_gerado) VALUES (?, ?, ?)",
     ("Nova contratação do São Paulo", "Detalhes sobre reforço", noticia_gerada)
 )
 conn.commit()
