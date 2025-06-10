@@ -6,14 +6,13 @@ co = cohere.Client(COHERE_API_KEY)
 
 # Função para gerar texto a partir da notícia original
 def gerar_texto():
-resposta = co.generate(
-    model="command",
-    prompt="Crie uma notícia esportiva sobre o São Paulo Futebol Clube e sua próxima contratação. A notícia deve estar totalmente em **português do Brasil**, sem palavras em inglês. Respeite a estrutura e estilo do jornalismo esportivo brasileiro.",
-    max_tokens=300,
-    temperature=0.9,  # Ajuste para gerar textos mais naturais
-    stop_sequences=["."]  # Para evitar que continue gerando após um ponto final
-)
-
+    resposta = co.generate(
+        model="command",
+        prompt="Crie uma notícia esportiva sobre o São Paulo Futebol Clube e sua próxima contratação. A notícia deve estar **totalmente em português do Brasil**, sem palavras em inglês. Se necessário, reformule qualquer nome estrangeiro para ficar natural em português.",
+        max_tokens=300,
+        temperature=0.9,
+        stop_sequences=["."]
+    )
     return resposta.generations[0].text
 
 # Gerar o texto com o Cohere
